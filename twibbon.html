@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AL-IRTS Twibbon Creator</title>
+  <meta name="description" content="Create your AL-IRTS twibbon with elegant design" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .elegant-title {
+      font-family: 'Cinzel', serif;
+      background: linear-gradient(135deg, #d4af37 0%, #f4e5b1 50%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .greek-border {
+      background: linear-gradient(90deg, #d4af37 0%, #f4e5b1 50%, #d4af37 100%);
+      height: 3px;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #1a4d3e 0%, #2d5f4f 50%, #4a1e1e 100%);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    
+    .btn-elegant {
+      background: linear-gradient(135deg, #d4af37 0%, #f4e5b1 50%, #d4af37 100%);
+      color: #1a4d3e;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-elegant:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+    }
+    
+    .ornament {
+      color: #d4af37;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body class="gradient-bg min-h-screen flex justify-center items-center p-4">
+  <div class="glass-card shadow-2xl rounded-3xl p-8 w-full max-w-4xl space-y-6">
+    
+    <!-- Header with Ornaments -->
+    <div class="text-center space-y-4">
+      <div class="ornament">◈ ◆ ◈</div>
+      <div class="flex items-center justify-center gap-4">
+        <img id="logo" src="assets/logo/logoirts.png" alt="Logo" class="w-20 h-20 object-contain" />
+        <div>
+          <h1 class="elegant-title text-4xl font-bold tracking-wider">AL-IRTS</h1>
+          <p class="text-sm text-gray-600 font-medium tracking-widest mt-1">TWIBBON CREATOR</p>
+        </div>
+      </div>
+      <div class="greek-border w-64 mx-auto"></div>
+      <div class="ornament">◈ ◆ ◈</div>
+    </div>
+
+    <p class="text-center text-gray-700 text-sm font-light leading-relaxed max-w-2xl mx-auto">
+      Unggah foto atau video Anda, pilih twibbon, sesuaikan posisi dan zoom,<br/>
+      lalu klik <span class="font-semibold text-amber-700">Generate</span> untuk mengunduh hasil Anda
+    </p>
+
+    <!-- Preview Canvas -->
+    <div class="relative">
+      <label class="block text-sm text-gray-700 mb-3 font-medium">Preview:</label>
+      <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-600/30">
+        <canvas id="canvas" width="800" height="800" class="w-full bg-gradient-to-br from-slate-800 to-slate-900 touch-none"></canvas>
+        <div class="absolute top-4 right-4 flex flex-col gap-2">
+          <button id="zoomIn" class="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-amber-50 hover:scale-110 transition-all border border-amber-600/20">
+            <span class="text-xl">➕</span>
+          </button>
+          <button id="zoomOut" class="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-amber-50 hover:scale-110 transition-all border border-amber-600/20">
+            <span class="text-xl">➖</span>
+          </button>
+          <button id="centerImg" class="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg hover:bg-amber-50 hover:scale-110 transition-all border border-amber-600/20">
+            <span class="text-xl">🔄</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <label class="cursor-pointer bg-gradient-to-br from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 border-2 border-amber-600/30 text-center py-3 rounded-xl text-sm font-semibold transition-all hover:shadow-lg">
+        📸 Upload / Kamera
+        <input id="imgInput" type="file" accept="image/*,video/*" class="hidden">
+      </label>
+
+      <select id="overlaySelect" class="border-2 border-amber-600/30 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-white">
+        <option value="">Pilih Twibbon</option>
+        <option value="assets/twibbon/1.png" selected>Twibbon AL-IRTS</option>
+      </select>
+
+      <select id="ratioSelect" class="border-2 border-amber-600/30 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-white">
+        <option value="9/16" selected>9:16 (Story)</option>
+        <option value="9/16" >9:16 (Story)</option>
+        <option value="3/4">3:4</option>
+        <option value="1" >1:1 (Square)</option>
+        <option value="4/3">4:3</option>
+        <option value="16/9">16:9</option>
+      </select>
+
+      <input id="customSize" type="number" value="2000" placeholder="Ukuran (px)" min="800" max="3000" class="border-2 border-amber-600/30 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-amber-500 focus:border-amber-500" />
+
+      <button id="reset" class="col-span-2 md:col-span-2 bg-gradient-to-br from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 py-3 rounded-xl text-sm font-semibold transition-all hover:shadow-lg border-2 border-gray-300">
+        🔄 Reset Semua
+      </button>
+    </div>
+
+    <!-- Action Button -->
+    <div class="text-center pt-4">
+      <button id="generate" class="btn-elegant px-8 py-4 rounded-xl text-lg font-bold shadow-xl hover:shadow-2xl transition-all">
+        ✨ Generate & Download
+      </button>
+    </div>
+
+    <!-- Footer Ornament -->
+    <div class="text-center pt-4">
+      <div class="ornament text-sm">◈ ◆ ◈</div>
+      <p class="text-xs text-gray-500 mt-2 font-light">The Second Semester Examination Committee</p>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let userImg = null, overlayImg = null;
+    let offset = { x: 0, y: 0 }, scale = 1, dragging = false, last = { x: 0, y: 0 }, startDist = 0;
+    const imgInput = document.getElementById('imgInput');
+    const overlaySelect = document.getElementById('overlaySelect');
+    const ratioSelect = document.getElementById('ratioSelect');
+    const customSize = document.getElementById('customSize');
+    const generateBtn = document.getElementById('generate');
+    const resetBtn = document.getElementById('reset');
+    const zoomIn = document.getElementById('zoomIn');
+    const zoomOut = document.getElementById('zoomOut');
+    const centerImg = document.getElementById('centerImg');
+
+    function clearCanvas() {
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#1a2332');
+      gradient.addColorStop(0.5, '#2d3748');
+      gradient.addColorStop(1, '#1a2332');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function redraw() {
+      clearCanvas();
+      if (userImg) {
+        const cw = canvas.width, ch = canvas.height;
+        const iw = userImg.videoWidth || userImg.width;
+        const ih = userImg.videoHeight || userImg.height;
+        const r = Math.max(cw / iw, ch / ih);
+        const drawW = iw * r * scale, drawH = ih * r * scale;
+        const dx = (cw - drawW) / 2 + offset.x, dy = (ch - drawH) / 2 + offset.y;
+        ctx.drawImage(userImg, dx, dy, drawW, drawH);
+      }
+      if (overlayImg) ctx.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
+    }
+
+    function setCanvasRatio() {
+      const ratio = eval(ratioSelect.value);
+      const size = parseInt(customSize.value) || 2000;
+      canvas.width = size;
+      canvas.height = size / ratio;
+      redraw();
+    }
+
+    setCanvasRatio();
+    clearCanvas();
+
+    // Load default overlay
+    const defaultOverlay = overlaySelect.value;
+    if (defaultOverlay) {
+      const img = new Image();
+      img.onload = () => { overlayImg = img; redraw(); };
+      img.src = defaultOverlay;
+    }
+
+    // Video loop
+    function loop() {
+      if (userImg instanceof HTMLVideoElement && !userImg.paused && !userImg.ended) {
+        redraw();
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    ratioSelect.addEventListener('change', setCanvasRatio);
+    customSize.addEventListener('change', setCanvasRatio);
+
+    imgInput.addEventListener('change', e => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+
+      const url = URL.createObjectURL(f);
+
+      if (f.type.startsWith('video/')) {
+        const vid = document.createElement('video');
+        vid.src = url;
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.muted = true;
+        vid.playsInline = true;
+        vid.onloadeddata = () => {
+          userImg = vid;
+          offset = { x: 0, y: 0 };
+          scale = 1;
+          vid.play();
+        };
+      } else if (f.type.startsWith('image/')) {
+        const img = new Image();
+        img.onload = () => {
+          const max = 2400;
+          if (img.width > max || img.height > max) {
+            const scale = max / Math.max(img.width, img.height);
+            const off = document.createElement('canvas');
+            off.width = img.width * scale;
+            off.height = img.height * scale;
+            const octx = off.getContext('2d');
+            octx.drawImage(img, 0, 0, off.width, off.height);
+            const small = new Image();
+            small.onload = () => { userImg = small; offset = { x: 0, y: 0 }; scale = 1; redraw(); };
+            small.src = off.toDataURL('image/jpeg', 0.9);
+          } else {
+            userImg = img;
+            offset = { x: 0, y: 0 };
+            scale = 1;
+            redraw();
+          }
+          URL.revokeObjectURL(url);
+        };
+        img.src = url;
+      }
+    });
+
+    overlaySelect.addEventListener('change', () => {
+      const val = overlaySelect.value;
+      if (!val) { overlayImg = null; redraw(); return; }
+      const img = new Image();
+      img.onload = () => { overlayImg = img; redraw(); };
+      img.src = val;
+    });
+
+    // Drag functionality
+    canvas.addEventListener('pointerdown', ev => {
+      dragging = true;
+      last = { x: ev.clientX, y: ev.clientY };
+      canvas.setPointerCapture(ev.pointerId);
+    });
+
+    canvas.addEventListener('pointermove', ev => {
+      if (!dragging) return;
+      const dx = ev.clientX - last.x, dy = ev.clientY - last.y;
+      last = { x: ev.clientX, y: ev.clientY };
+      offset.x += dx;
+      offset.y += dy;
+      redraw();
+    });
+
+    canvas.addEventListener('pointerup', ev => {
+      dragging = false;
+      canvas.releasePointerCapture(ev.pointerId);
+    });
+
+    // Wheel zoom
+    canvas.addEventListener('wheel', ev => {
+      ev.preventDefault();
+      const f = ev.deltaY < 0 ? 1.08 : 0.92;
+      scale *= f;
+      scale = Math.max(0.3, Math.min(5, scale));
+      redraw();
+    });
+
+    // Touch pinch zoom
+    canvas.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        startDist = Math.hypot(dx, dy);
+      }
+    });
+
+    canvas.addEventListener('touchmove', e => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        const factor = dist / startDist;
+        scale *= factor;
+        scale = Math.max(0.3, Math.min(5, scale));
+        startDist = dist;
+        redraw();
+      }
+    });
+
+    // Button controls
+    zoomIn.onclick = () => {
+      scale = Math.min(scale * 1.15, 5);
+      redraw();
+    };
+
+    zoomOut.onclick = () => {
+      scale = Math.max(scale * 0.85, 0.3);
+      redraw();
+    };
+
+    centerImg.onclick = () => {
+      offset = { x: 0, y: 0 };
+      redraw();
+    };
+
+    generateBtn.addEventListener('click', () => {
+      if (!userImg) {
+        alert('⚠️ Silakan upload foto atau video terlebih dahulu!');
+        return;
+      }
+      const data = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      const now = new Date();
+      const timestamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}-${String(now.getSeconds()).padStart(2, '0')}`;
+      a.href = data;
+      a.download = `ALIRTS-Twibbon_${timestamp}.png`;
+      a.click();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      userImg = null;
+      overlayImg = null;
+      offset = { x: 0, y: 0 };
+      scale = 1;
+      imgInput.value = '';
+      overlaySelect.value = 'assets/psc/psc.png';
+      customSize.value = '2000';
+      ratioSelect.value = '1';
+      setCanvasRatio();
+      
+      // Reload default overlay
+      const img = new Image();
+      img.onload = () => { overlayImg = img; redraw(); };
+      img.src = 'assets/twibbon/1.png';
+    });
+  </script>
+</body>
+</html>

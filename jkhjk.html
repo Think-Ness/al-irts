@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL-IRTS - Tim Acara Ramadhan Luqmanul Hakim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a4d2e;
+            --secondary: #8b6914;
+            --gold: #d4af37;
+            --cream: #f5e6d3;
+            --dark: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: var(--gold);
+        }
+
+        .loader-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border: 3px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #0f2818 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--gold) 0px,
+                var(--gold) 20px,
+                var(--secondary) 20px,
+                var(--secondary) 40px
+            );
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-header {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: var(--cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: var(--primary);
+            border: 5px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 15px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            padding: 60px 20px;
+        }
+
+        section:nth-child(even) {
+            background: var(--cream);
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gold);
+        }
+
+        /* Nilai-Nilai */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 5px solid var(--gold);
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .value-number {
+            font-size: 2em;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .value-title {
+            font-size: 1.3em;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .value-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer::before {
+            content: '';
+            display: block;
+            height: 10px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--gold) 0px,
+                var(--gold) 20px,
+                var(--secondary) 20px,
+                var(--secondary) 40px
+            );
+            margin-bottom: 30px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-logo">إرتس</div>
+            <h2>AL-IRTS</h2>
+            <p>Memuat...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="hero-content">
+            <div class="logo-header">إرتس</div>
+            <h1>AL-IRTS</h1>
+            <p class="subtitle">Tim Acara Ramadhan Luqmanul Hakim Committee</p>
+            <p>19 Rajab 1447 / 2026</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#tentang">Tentang</a></li>
+            <li><a href="#nilai">Nilai-Nilai</a></li>
+            <li><a href="#galeri">Galeri</a></li>
+            <li><a href="#tim">Tim Panitia</a></li>
+            <li><a href="#kontak">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <!-- Tentang -->
+    <section id="tentang">
+        <div class="container">
+            <h2>Tentang AL-IRTS</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1em; line-height: 1.8; color: #555;">
+                AL-IRTS adalah Tim Acara Ramadhan Luqmanul Hakim Committee yang berkomitmen untuk menyelenggarakan kegiatan-kegiatan berkualitas selama bulan suci Ramadhan. Dengan semangat kebersamaan dan dedikasi, kami berupaya memberikan pengalaman spiritual dan sosial yang bermakna bagi seluruh peserta.
+            </p>
+        </div>
+    </section>
+
+    <!-- Nilai-Nilai -->
+    <section id="nilai">
+        <div class="container">
+            <h2>Nilai-Nilai Kami</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-number">1</div>
+                    <div class="value-title">Warisan Ilmu (إِرْثُ الْعِلْمِ)</div>
+                    <div class="value-desc">Panitia siap menjadi penerus warisan ilmu, menjadi pondok, memasakkan setiap santri merasakan ilmu dengan benar.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-number">2</div>
+                    <div class="value-title">Amanah Kesinambungan (إِرْثُ الْأَمَانَةِ)</div>
+                    <div class="value-desc">Ujian adalah bagian penting dari sistem KMI. Panitia menjadi penurus Insan kesinambungan (Amanuah, objektif, disiplin, jujur, dan ikhlas).</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-number">3</div>
+                    <div class="value-title">Penjaga Standar (إِرْثُ الدِّقَّةِ)</div>
+                    <div class="value-desc">Seperti warisan yang harus dijaga nilainya, begitu pula mutu ujian dan pengelolaan harus dijaga dengan.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-number">4</div>
+                    <div class="value-title">Pengikat Identitas (إِرْثُ الْهُوِيَّةِ)</div>
+                    <div class="value-desc">Panitia dengan nama "IRTS" mengait simbol bahwa mereka bukan sekadar tim kerja, tetapi pewaris misi dan warisan perjuangan RMID sebagai manifestasi kadar-kadar umum.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 AL-IRTS. Tim Acara Ramadhan Luqmanul Hakim Committee</p>
+        <p style="margin-top: 10px; opacity: 0.8;">19 Rajab 1447</p>
+    </footer>
+
+    <script>
+        // Loading animation
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('hidden');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
