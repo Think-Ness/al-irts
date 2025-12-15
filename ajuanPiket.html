@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Piket Ujian AL-IRTS</title>
+<style>
+:root{
+  --primary:#1a365d;
+  --primary-light:#2d4a7c;
+  --accent:#3b82f6;
+  --accent-hover:#2563eb;
+  --success:#10b981;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --bg-gradient-1:#f8fafc;
+  --bg-gradient-2:#e2e8f0;
+  --text:#1e293b;
+  --text-light:#64748b;
+  --border:#cbd5e1;
+  --shadow:rgba(15,23,42,.08);
+  --shadow-hover:rgba(15,23,42,.12);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  background:linear-gradient(135deg,var(--bg-gradient-1),var(--bg-gradient-2));
+  min-height:100vh;
+  padding:20px;
+  color:var(--text);
+  line-height:1.6;
+}
+
+.container{
+  max-width:900px;
+  margin:0 auto;
+}
+
+/* ===== HEADER ===== */
+.header{
+  text-align:center;
+  margin-bottom:32px;
+  animation:fadeInDown .6s ease;
+}
+
+.header h1{
+  color:var(--primary);
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:8px;
+  letter-spacing:-.5px;
+}
+
+.header p{
+  color:var(--text-light);
+  font-size:15px;
+}
+
+/* ===== CARD ===== */
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:20px;
+  box-shadow:0 4px 20px var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+  animation:fadeInUp .6s ease;
+}
+
+.card:hover{
+  box-shadow:0 8px 30px var(--shadow-hover);
+}
+
+.card-title{
+  color:var(--primary);
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.card-title::before{
+  content:'';
+  width:4px;
+  height:20px;
+  background:var(--accent);
+  border-radius:2px;
+}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group{
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  font-weight:600;
+  font-size:14px;
+  color:var(--text);
+  margin-bottom:8px;
+}
+
+label .required{
+  color:var(--danger);
+  margin-left:2px;
+}
+
+select,textarea,input[type="text"]{
+  width:100%;
+  padding:12px 16px;
+  border:2px solid var(--border);
+  border-radius:12px;
+  font-size:15px;
+  font-family:inherit;
+  background:#fff;
+  color:var(--text);
+  transition:all .2s;
+}
+
+select:focus,textarea:focus,input:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:0 0 0 4px rgba(59,130,246,.1);
+}
+
+select:disabled,textarea:disabled,input:disabled{
+  background:#f1f5f9;
+  cursor:not-allowed;
+  opacity:.6;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+  font-size:14px;
+}
+
+/* ===== CUSTOM SEARCHABLE SELECT ===== */
+.select-wrapper{
+  position:relative;
+}
+
+.select-search{
+  position:relative;
+  width:100%;
+}
+
+.select-search input{
+  padding-right:40px;
+}
+
+.select-search-icon{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--text-light);
+  pointer-events:none;
+}
+
+.select-dropdown{
+  position:absolute;
+  top:calc(100% + 4px);
+  left:0;
+  right:0;
+  max-height:240px;
+  overflow-y:auto;
+  background:#fff;
+  border:2px solid var(--border);
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+  z-index:100;
+  display:none;
+}
+
+.select-dropdown.show{
+  display:block;
+  animation:dropdownSlide .2s ease;
+}
+
+.select-option{
+  padding:12px 16px;
+  cursor:pointer;
+  transition:background .15s;
+  border-bottom:1px solid #f1f5f9;
+}
+
+.select-option:last-child{
+  border-bottom:none;
+}
+
+.select-option:hover{
+  background:#f8fafc;
+}
+
+.select-option.selected{
+  background:#dbeafe;
+  color:var(--accent);
+  font-weight:600;
+}
+
+.select-option-empty{
+  padding:20px;
+  text-align:center;
+  color:var(--text-light);
+  font-size:14px;
+}
+
+@keyframes dropdownSlide{
+  from{
+    opacity:0;
+    transform:translateY(-8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ===== BUTTONS ===== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:12px 24px;
+  border:none;
+  border-radius:12px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:inherit;
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(26,54,93,.2);
+}
+
+.btn-primary:hover:not(:disabled){
+  background:var(--primary-light);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(26,54,93,.3);
+}
+
+.btn-secondary{
+  background:#f1f5f9;
+  color:var(--accent);
+  border:2px solid #e2e8f0;
+}
+
+.btn-secondary:hover:not(:disabled){
+  background:#e2e8f0;
+  border-color:#cbd5e1;
+}
+
+.btn-add{
+  width:100%;
+  margin-top:12px;
+}
+
+.btn-submit{
+  width:100%;
+  padding:16px;
+  font-size:16px;
+}
+
+.btn-remove{
+  padding:6px 12px;
+  font-size:13px;
+  background:#fee2e2;
+  color:var(--danger);
+  border:1px solid #fecaca;
+  margin-left:8px;
+  flex-shrink:0;
+}
+
+.btn-remove:hover:not(:disabled){
+  background:#fecaca;
+}
+
+/* ===== PIKET GRID ===== */
+.piket-grid{
+  display:grid;
+  gap:20px;
+}
+
+.piket-section{
+  background:#f8fafc;
+  padding:20px;
+  border-radius:12px;
+  border:2px dashed var(--border);
+}
+
+.piket-section-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.piket-section h3{
+  color:var(--primary);
+  font-size:16px;
+  font-weight:600;
+}
+
+.badge{
+  background:var(--accent);
+  color:#fff;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+}
+
+.guru-item{
+  display:flex;
+  align-items:flex-start;
+  margin-bottom:12px;
+  animation:fadeIn .3s ease;
+  gap:8px;
+}
+
+.guru-item .select-wrapper{
+  flex:1;
+}
+
+.empty-state{
+  text-align:center;
+  padding:32px 16px;
+  color:var(--text-light);
+  font-size:14px;
+}
+
+/* ===== RADIO TABS ===== */
+.radio-tabs{
+  display:flex;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.radio-tab{
+  flex:1;
+}
+
+.radio-tab input{
+  display:none;
+}
+
+.radio-tab label{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  background:#f1f5f9;
+  border:2px solid #e2e8f0;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all .2s;
+  font-weight:600;
+  font-size:14px;
+  text-align:center;
+  min-height:60px;
+}
+
+.radio-tab input:checked + label{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+  box-shadow:0 4px 12px rgba(59,130,246,.3);
+}
+
+.radio-tab label:hover{
+  border-color:#cbd5e1;
+}
+
+/* ===== LOADING ===== */
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  animation:fadeIn .2s ease;
+}
+
+.loading-content{
+  text-align:center;
+  background:#fff;
+  padding:32px;
+  border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.15);
+  max-width:320px;
+}
+
+.spinner{
+  width:50px;
+  height:50px;
+  border:4px solid #e2e8f0;
+  border-top-color:var(--accent);
+  border-radius:50%;
+  margin:0 auto 16px;
+  animation:spin 1s linear infinite;
+}
+
+.loading-content p{
+  color:var(--text);
+  font-size:15px;
+  font-weight:500;
+}
+
+/* ===== ALERT ===== */
+.alert{
+  padding:16px 20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  animation:fadeInDown .4s ease;
+}
+
+.alert-info{
+  background:#dbeafe;
+  color:#1e40af;
+  border:2px solid #93c5fd;
+}
+
+.alert-warning{
+  background:#fef3c7;
+  color:#92400e;
+  border:2px solid #fcd34d;
+}
+
+.alert-error{
+  background:#fee2e2;
+  color:#991b1b;
+  border:2px solid #fecaca;
+}
+
+/* ===== CONFIG SECTION ===== */
+.config-section{
+  background:#fef3c7;
+  border:2px solid #fbbf24;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+.config-section h3{
+  color:#92400e;
+  font-size:16px;
+  margin-bottom:12px;
+}
+
+.config-section input{
+  font-family:monospace;
+  font-size:13px;
+}
+
+.config-section .btn{
+  margin-top:12px;
+  width:100%;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+@keyframes fadeInUp{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes fadeInDown{
+  from{
+    opacity:0;
+    transform:translateY(-20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px){
+  body{
+    padding:40px 20px;
+  }
+
+  .header h1{
+    font-size:32px;
+  }
+
+  .card{
+    padding:32px;
+  }
+
+  .piket-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .btn-submit{
+    max-width:400px;
+    margin:0 auto;
+    display:flex;
+  }
+}
+
+@media (max-width: 640px){
+  .header h1{
+    font-size:24px;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .piket-section{
+    padding:16px;
+  }
+
+  .radio-tabs{
+    flex-direction:column;
+  }
+}
+
+/* ===== UTILITY ===== */
+.hidden{
+  display:none !important;
+}
+
+.text-center{
+  text-align:center;
+}
+
+.mt-2{
+  margin-top:16px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📋 Input Piket Ujian AL-IRTS</h1>
+    <p>Sistem Pendataan Piket Pengawas Ujian</p>
+  </div>
+
+
+
+  <!-- LOADING INITIAL -->
+  <div id="initialLoading" class="loading-overlay hidden">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Memuat data...</p>
+    </div>
+  </div>
+
+  <!-- FORM CONTENT -->
+  <div id="formContent" class="hidden">
+    
+    <!-- PILIH TIPE -->
+    <div class="card">
+      <div class="card-title">Tipe Piket</div>
+      <div class="radio-tabs">
+        <div class="radio-tab">
+          <input type="radio" id="tipeKamar" name="tipe" value="kamar" checked onchange="tipeChanged()">
+          <label for="tipeKamar">
+            🏠 Kamar Bagian
+          </label>
+        </div>
+        <div class="radio-tab">
+          <input type="radio" id="tipeKepanitiaan" name="tipe" value="kepanitiaan" onchange="tipeChanged()">
+          <label for="tipeKepanitiaan">
+            👥 Kepanitiaan
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- KAMAR BAGIAN -->
+    <div class="card" id="cardKamar">
+      <div class="card-title">Kamar Bagian</div>
+      <div class="form-group">
+        <label for="kamar">Pilih Kamar <span class="required">*</span></label>
+        <select id="kamar" onchange="kamarDipilih()">
+          <option value="">-- Pilih Kamar Bagian --</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KEPANITIAAN -->
+    <div class="card hidden" id="cardKepanitiaan">
+      <div class="card-title">Kepanitiaan</div>
+      <div class="alert alert-info">
+        ℹ️ Mode kepanitiaan: Semua guru bisa dipilih tanpa batasan kamar
+      </div>
+      <div class="form-group">
+        <label for="namaKepanitiaan">Nama Kepanitiaan <span class="required">*</span></label>
+        <input type="text" id="namaKepanitiaan" placeholder="Contoh: Seksi Konsumsi, Seksi Dokumentasi, dll">
+      </div>
+    </div>
+
+    <!-- PIKET UJIAN -->
+    <div class="card">
+      <div class="card-title">Daftar Piket Pengawas</div>
+      
+      <div class="piket-grid">
+        <!-- SYAFAHI -->
+        <div class="piket-section">
+          <div class="piket-section-header">
+            <h3>🗣️ Ujian Syafahi</h3>
+            <span class="badge" id="badgeSyafahi">0</span>
+          </div>
+          <div id="syafahi" class="guru-list"></div>
+          <button class="btn btn-secondary btn-add" onclick="tambahGuru('syafahi')">
+            + Tambah Pengawas
+          </button>
+        </div>
+
+        <!-- TAHRIRI -->
+        <div class="piket-section">
+          <div class="piket-section-header">
+            <h3>✍️ Ujian Tahriri</h3>
+            <span class="badge" id="badgeTahriri">0</span>
+          </div>
+          <div id="tahriri" class="guru-list"></div>
+          <button class="btn btn-secondary btn-add" onclick="tambahGuru('tahriri')">
+            + Tambah Pengawas
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALASAN (untuk kamar TIDAK piket) -->
+    <div class="card hidden" id="boxAlasan">
+      <div class="card-title">Alasan</div>
+      <div class="alert alert-warning">
+        ⚠️ Kamar ini ditandai TIDAK ADA piket. Mohon isi alasan.
+      </div>
+      <div class="form-group">
+        <label for="alasan">Alasan/Keterangan <span class="required">*</span></label>
+        <textarea id="alasan" placeholder="Contoh: Semua guru sedang ujian luar, dll"></textarea>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <button class="btn btn-primary btn-submit" onclick="submitData()">
+      ✓ SUBMIT DATA
+    </button>
+
+  </div>
+</div>
+
+<!-- LOADING SUBMIT -->
+<div id="submitLoading" class="loading-overlay hidden">
+  <div class="loading-content">
+    <div class="spinner"></div>
+    <p>Mengirim data...</p>
+  </div>
+</div>
+
+<script>
+// ===============================
+// CONFIG (FIXED API URL)
+// ===============================
+const API_URL = "https://script.google.com/macros/s/AKfycbxoWwm6qEUYZVLhMksyyzDl8Pgh_ZPYPlYDrSTcswQIG2AisNwTsR2RxPbzm5TFVmVDjQ/exec";
+
+// Data
+let semuaGuru = [];
+let semuaKamar = [];
+let kamarAktif = '';
+let statusKamar = '';
+let tipeAktif = 'kamar';
+let dataLoaded = false;
+// ===============================
+// INIT
+// ===============================
+window.addEventListener('DOMContentLoaded', () => {
+  loadInitialData();
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.select-wrapper')) {
+      document.querySelectorAll('.select-dropdown').forEach(d => {
+        d.classList.remove('show');
+      });
+    }
+  });
+});
+
+
+// ===============================
+// API Call Helper
+// ===============================
+async function callApi(action, data = {}) {
+  // GET read endpoints via JSONP (existing)
+  if (action === 'getGuru' || action === 'getKamar') {
+    return new Promise((resolve, reject) => {
+      const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+      const timeoutMs = 10000;
+      let timer = null;
+
+      window[cbName] = (resp) => {
+        clearTimeout(timer);
+        try {
+          if (!resp) throw new Error('No response');
+          if (!resp.success) throw new Error(resp.error || 'API returned unsuccessful response');
+          resolve(resp.data);
+        } catch (err) {
+          reject(err);
+        } finally {
+          delete window[cbName];
+          if (script && script.parentNode) script.parentNode.removeChild(script);
+        }
+      };
+
+      const url = API_URL + '?action=' + encodeURIComponent(action) + '&callback=' + cbName;
+      const script = document.createElement('script');
+      script.src = url;
+      script.async = true;
+      script.onerror = () => {
+        clearTimeout(timer);
+        delete window[cbName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+        reject(new Error('JSONP load error'));
+      };
+      document.head.appendChild(script);
+
+      timer = setTimeout(() => {
+        if (window[cbName]) {
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          reject(new Error('Request timed out'));
+        }
+      }, timeoutMs);
+    });
+  }
+
+  // For submitPiket: try POST, on network/CORS error fallback to JSONP submit
+  if (action === 'submitPiket') {
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, data })
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status} ${res.statusText} ${text}`);
+      }
+
+      const json = await res.json().catch(() => null);
+      if (!json) throw new Error('Invalid JSON response from API');
+      if (!json.success) throw new Error(json.error || 'API returned unsuccessful response');
+
+      return json.data;
+    } catch (err) {
+      // Fallback to JSONP submit (encode payload in query)
+      return new Promise((resolve, reject) => {
+        const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2);
+        const timeoutMs = 15000;
+        let timer = null;
+
+        window[cbName] = (resp) => {
+          clearTimeout(timer);
+          try {
+            if (!resp) throw new Error('No response');
+            if (!resp.success) throw new Error(resp.error || 'API returned unsuccessful response');
+            resolve(resp.data);
+          } catch (e) {
+            reject(e);
+          } finally {
+            delete window[cbName];
+            if (script && script.parentNode) script.parentNode.removeChild(script);
+          }
+        };
+
+        const payloadStr = encodeURIComponent(JSON.stringify(data));
+        const url = API_URL + '?action=submitPiket&data=' + payloadStr + '&callback=' + cbName;
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onerror = () => {
+          clearTimeout(timer);
+          delete window[cbName];
+          if (script.parentNode) script.parentNode.removeChild(script);
+          reject(new Error('JSONP submit failed'));
+        };
+        document.head.appendChild(script);
+
+        timer = setTimeout(() => {
+          if (window[cbName]) {
+            delete window[cbName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            reject(new Error('JSONP submit timed out'));
+          }
+        }, timeoutMs);
+      });
+    }
+  }
+
+  // For any other action use POST (same as before)
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, data })
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(`HTTP ${res.status} ${res.statusText} ${text}`);
+    }
+
+    const json = await res.json().catch(() => null);
+    if (!json) throw new Error('Invalid JSON response from API');
+    if (!json.success) throw new Error(json.error || 'API returned unsuccessful response');
+
+    return json.data;
+  } catch (err) {
+    throw new Error('callApi error: ' + (err.message || err));
+  }
+}
+
+// ===============================
+// Load Initial Data
+// ===============================
+async function loadInitialData() {
+  document.getElementById('initialLoading').classList.remove('hidden');
+  
+  try {
+    // Load Guru & Kamar secara parallel
+    const [guruData, kamarData] = await Promise.all([
+      callApi('getGuru'),
+      callApi('getKamar')
+    ]);
+    
+    semuaGuru = guruData;
+    semuaKamar = kamarData;
+    
+    // Populate kamar select
+    const select = document.getElementById('kamar');
+    select.innerHTML = '<option value="">-- Pilih Kamar Bagian --</option>' +
+      kamarData.map(k => 
+        `<option value="${k.kamar}" data-status="${k.status}">${k.kamar} ${k.status === 'TIDAK' ? '(Tidak Ada Piket)' : ''}</option>`
+      ).join('');
+    
+    dataLoaded = true;
+    document.getElementById('initialLoading').classList.add('hidden');
+    document.getElementById('formContent').classList.remove('hidden');
+    
+  } catch (error) {
+    document.getElementById('initialLoading').classList.add('hidden');
+    
+    const retry = confirm('❌ Gagal memuat data:\n' + error.message + '\n\nCoba lagi?');
+    if (retry) {
+      loadInitialData();
+    } else {
+      // Reset config
+      localStorage.removeItem('apiUrl');
+      location.reload();
+    }
+  }
+}
+
+// ===============================
+// Tipe Changed
+// ===============================
+function tipeChanged() {
+  const tipe = document.querySelector('input[name="tipe"]:checked').value;
+  tipeAktif = tipe;
+
+  const cardKamar = document.getElementById('cardKamar');
+  const cardKepanitiaan = document.getElementById('cardKepanitiaan');
+  const boxAlasan = document.getElementById('boxAlasan');
+
+  if (tipe === 'kamar') {
+    cardKamar.classList.remove('hidden');
+    cardKepanitiaan.classList.add('hidden');
+    kamarAktif = '';
+    statusKamar = '';
+  } else {
+    cardKamar.classList.add('hidden');
+    cardKepanitiaan.classList.remove('hidden');
+    boxAlasan.classList.add('hidden');
+    kamarAktif = 'KEPANITIAAN';
+    statusKamar = 'ADA';
+  }
+
+  resetGuruList();
+}
+
+// ===============================
+// Kamar Dipilih
+// ===============================
+function kamarDipilih() {
+  const opt = document.querySelector('#kamar option:checked');
+  kamarAktif = opt.value;
+  statusKamar = opt.dataset.status || '';
+
+  resetGuruList();
+
+  const boxAlasan = document.getElementById('boxAlasan');
+  const alasanInput = document.getElementById('alasan');
+
+  if (statusKamar === 'TIDAK') {
+    boxAlasan.classList.remove('hidden');
+    alasanInput.required = true;
+  } else {
+    boxAlasan.classList.add('hidden');
+    alasanInput.required = false;
+    alasanInput.value = '';
+  }
+}
+
+function resetGuruList() {
+  document.getElementById('syafahi').innerHTML = '';
+  document.getElementById('tahriri').innerHTML = '';
+  updateBadge('syafahi');
+  updateBadge('tahriri');
+}
+
+// ===============================
+// Searchable Select
+// ===============================
+function createSearchableSelect(guruList, onSelect) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'select-wrapper';
+
+  const searchDiv = document.createElement('div');
+  searchDiv.className = 'select-search';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = '🔍 Cari nama guru...';
+  input.autocomplete = 'off';
+
+  const icon = document.createElement('span');
+  icon.className = 'select-search-icon';
+  icon.textContent = '▼';
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'select-dropdown';
+
+  // Render options
+  function renderOptions(filter = '') {
+    const filtered = guruList.filter(g => {
+      const text = `${g.rank} ${g.nama} ${g.kamar}`.toLowerCase();
+      return text.includes(filter.toLowerCase());
+    });
+
+    if (filtered.length === 0) {
+      dropdown.innerHTML = '<div class="select-option-empty">Tidak ada hasil</div>';
+      return;
+    }
+
+    dropdown.innerHTML = filtered.map(g => 
+      `<div class="select-option" data-rank="${g.rank}" data-nama="${g.nama}" data-kamar="${g.kamar}">
+        <strong>${g.rank} - ${g.nama}</strong>
+        <div style="font-size:12px;color:var(--text-light);margin-top:2px">${g.kamar}</div>
+      </div>`
+    ).join('');
+
+    // Add click handlers
+    dropdown.querySelectorAll('.select-option').forEach(opt => {
+      opt.onclick = () => {
+        const rank = opt.dataset.rank;
+        const nama = opt.dataset.nama;
+        const kamar = opt.dataset.kamar;
+        
+        input.value = `${rank} - ${nama}`;
+        input.dataset.rank = rank;
+        input.dataset.nama = nama;
+        input.dataset.kamar = kamar;
+        
+        dropdown.classList.remove('show');
+        
+        if (onSelect) onSelect({ rank, nama, kamar });
+      };
+    });
+  }
+
+  // Input events
+  input.onfocus = () => {
+    renderOptions(input.value);
+    dropdown.classList.add('show');
+  };
+
+  input.oninput = () => {
+    renderOptions(input.value);
+    if (!dropdown.classList.contains('show')) {
+      dropdown.classList.add('show');
+    }
+  };
+
+  searchDiv.appendChild(input);
+  searchDiv.appendChild(icon);
+  wrapper.appendChild(searchDiv);
+  wrapper.appendChild(dropdown);
+
+  return { wrapper, input };
+}
+
+// ===============================
+// Tambah Guru
+// ===============================
+function tambahGuru(jenis) {
+  if (!dataLoaded) {
+    alert('⚠️ Data masih dimuat, mohon tunggu sebentar');
+    return;
+  }
+
+  let guruList = [];
+
+  if (tipeAktif === 'kepanitiaan') {
+    guruList = semuaGuru;
+  } else {
+    if (!kamarAktif) {
+      alert('⚠️ Silakan pilih kamar bagian terlebih dahulu');
+      return;
+    }
+    guruList = semuaGuru.filter(g => g.kamar === kamarAktif);
+    
+    if (guruList.length === 0) {
+      alert('⚠️ Tidak ada guru terdaftar di kamar ini');
+      return;
+    }
+  }
+
+  const container = document.getElementById(jenis);
+  const itemDiv = document.createElement('div');
+  itemDiv.className = 'guru-item';
+
+  const { wrapper, input } = createSearchableSelect(guruList, () => {
+    updateBadge(jenis);
+  });
+
+  const btnRemove = document.createElement('button');
+  btnRemove.className = 'btn btn-remove';
+  btnRemove.textContent = '×';
+  btnRemove.onclick = () => {
+    itemDiv.remove();
+    updateBadge(jenis);
+  };
+
+  itemDiv.appendChild(wrapper);
+  itemDiv.appendChild(btnRemove);
+  container.appendChild(itemDiv);
+
+  setTimeout(() => input.focus(), 100);
+
+  updateBadge(jenis);
+}
+
+// ===============================
+// Update Badge Counter
+// ===============================
+function updateBadge(jenis) {
+  const inputs = document.querySelectorAll(`#${jenis} .select-search input`);
+  const filled = Array.from(inputs).filter(i => i.dataset.rank).length;
+  document.getElementById(`badge${jenis.charAt(0).toUpperCase() + jenis.slice(1)}`).textContent = filled;
+}
+
+// ===============================
+// Submit Data
+// ===============================
+async function submitData() {
+
+  // ===== VALIDASI TIPE =====
+  if (tipeAktif === 'kamar' && !kamarAktif) {
+    alert('⚠️ Silakan pilih kamar bagian');
+    return;
+  }
+
+  if (tipeAktif === 'kepanitiaan') {
+    const namaKepanitiaan = document.getElementById('namaKepanitiaan').value.trim();
+    if (!namaKepanitiaan) {
+      alert('⚠️ Nama kepanitiaan harus diisi');
+      return;
+    }
+    kamarAktif = `KEPANITIAAN: ${namaKepanitiaan}`;
+  }
+
+  // ===== KUMPULKAN DATA GURU =====
+  const list = [];
+
+  // gunakan set terpisah per jenis agar guru boleh muncul di kedua jenis,
+  // tapi tidak boleh didobel dalam satu jenis
+  const setSyafahi = new Set();
+  const setTahriri = new Set();
+
+  // --- SYAFAHI ---
+  let duplicate = false;
+  document.querySelectorAll('#syafahi .select-search input').forEach(input => {
+    if (duplicate) return;
+    if (input.dataset.rank && input.dataset.nama) {
+      const key = `${input.dataset.rank}|${input.dataset.nama}`;
+      if (setSyafahi.has(key)) {
+        alert(`⚠️ Guru ${input.dataset.nama} sudah dipilih lebih dari sekali di Syafahi`);
+        duplicate = true;
+        return;
+      }
+      setSyafahi.add(key);
+      list.push({
+        jenis: 'Syafahi',
+        rank: input.dataset.rank,
+        nama: input.dataset.nama
+      });
+    }
+  });
+  if (duplicate) return;
+
+  // --- TAHRIRI ---
+  document.querySelectorAll('#tahriri .select-search input').forEach(input => {
+    if (duplicate) return;
+    if (input.dataset.rank && input.dataset.nama) {
+      const key = `${input.dataset.rank}|${input.dataset.nama}`;
+      if (setTahriri.has(key)) {
+        alert(`⚠️ Guru ${input.dataset.nama} sudah dipilih lebih dari sekali di Tahriri`);
+        duplicate = true;
+        return;
+      }
+      setTahriri.add(key);
+      list.push({
+        jenis: 'Tahriri',
+        rank: input.dataset.rank,
+        nama: input.dataset.nama
+      });
+    }
+  });
+  if (duplicate) return;
+
+  // ===== VALIDASI MINIMAL =====
+  if (list.length === 0) {
+    alert('⚠️ Minimal pilih satu pengawas');
+    return;
+  }
+
+  // ===== VALIDASI ALASAN =====
+  const alasan = document.getElementById('alasan').value.trim();
+  if (statusKamar === 'TIDAK' && !alasan) {
+    alert('⚠️ Alasan wajib diisi untuk kamar yang tidak ada piket');
+    return;
+  }
+
+  // ===== KONFIRMASI =====
+  const msg =
+    `Apakah data sudah benar?\n\n` +
+    `${tipeAktif === 'kepanitiaan' ? 'Kepanitiaan' : 'Kamar'}: ${kamarAktif}\n` +
+    `Jumlah Pengawas: ${list.length}\n\n` +
+    list.map(g => `• ${g.jenis}: ${g.rank} - ${g.nama}`).join('\n');
+
+  if (!confirm(msg)) return;
+
+  // ===== SUBMIT =====
+  document.getElementById('submitLoading').classList.remove('hidden');
+
+  try {
+    await callApi('submitPiket', {
+      kamar: kamarAktif,
+      tipe: tipeAktif,
+      alasan: alasan || '-',
+      list: list
+    });
+
+    document.getElementById('submitLoading').classList.add('hidden');
+    alert('✅ Data berhasil terkirim!');
+    location.reload();
+
+  } catch (error) {
+    document.getElementById('submitLoading').classList.add('hidden');
+    alert('❌ Gagal mengirim data: ' + error.message);
+  }
+}
+</script>
+</body>
+</html>
