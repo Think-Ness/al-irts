@@ -570,6 +570,19 @@ textarea{
 .mt-2{
   margin-top:16px;
 }
+
+/* diagnostic box */
+.diag{
+  margin-top:12px;
+  padding:12px;
+  border-radius:8px;
+  background:#fff4f4;
+  border:1px solid #fecaca;
+  color:#991b1b;
+  font-family:monospace;
+  font-size:13px;
+  white-space:pre-wrap;
+}
 </style>
 </head>
 <body>
@@ -580,9 +593,12 @@ textarea{
     <p>Sistem Pendataan Piket Pengawas Ujian</p>
 
     <!-- debug: test API (bisa dihapus setelah selesai) -->
-    <!-- <div style="margin-top:12px">
+    <div style="margin-top:12px">
       <button onclick="testApi()" class="btn btn-secondary" style="padding:8px 12px;font-size:13px">Test API</button>
-    </div> -->
+    </div>
+
+    <!-- diagnostic box -->
+    <div id="diag" class="diag hidden" aria-live="polite"></div>
   </div>
 
 
@@ -745,8 +761,10 @@ async function callApi(action, data = {}) {
         try {
           if (!resp) throw new Error('No response');
           if (!resp.success) throw new Error(resp.error || 'API returned unsuccessful response');
+          clearDiag();
           resolve(resp.data);
         } catch (err) {
+          showDiag(err.message);
           reject(err);
         } finally {
           try { delete window[cbName]; } catch(e){}
@@ -764,14 +782,13 @@ async function callApi(action, data = {}) {
         try { delete window[cbName]; } catch(e){}
         if (script && script.parentNode) script.parentNode.removeChild(script);
 
-        // More helpful diagnostic for common causes
         const msg =
           'JSONP load error.\n\nKemungkinan penyebab:\n' +
-          '1) Apps Script belum di-deploy sebagai "Anyone, even anonymous".\n' +
-          '2) API_URL salah (gunakan URL deploy terbaru).\n' +
-          '3) Apps Script mereturn halaman login/HTML (buka link test di browser untuk cek).\n\n' +
-          'Coba buka di browser:\n' + url + '\n\n' +
-          'Jika yang tampil bukan JavaScript callback, perbaiki deployment.';
+          '• Apps Script belum di-deploy sebagai "Anyone, even anonymous".\n' +
+          '• API_URL salah atau deploy URL berubah.\n' +
+          '• Browser/extension memblokir skrip pihak ketiga (adblock/privacy).\n\n' +
+          'Buka link test di browser ini:\n' + url;
+        showDiag(msg, url);
         reject(new Error(msg));
       };
 
@@ -780,7 +797,9 @@ async function callApi(action, data = {}) {
       timer = setTimeout(() => {
         try { delete window[cbName]; } catch(e){}
         if (script && script.parentNode) script.parentNode.removeChild(script);
-        reject(new Error('JSONP request timed out. Cek koneksi dan deployment. Coba buka di browser: ' + url));
+        const msg = 'JSONP request timed out. Cek koneksi, CORS/deploy atau extension yang memblokir.\nTest URL: ' + url;
+        showDiag(msg, url);
+        reject(new Error(msg));
       }, timeoutMs);
     });
   }
@@ -877,7 +896,7 @@ async function callApi(action, data = {}) {
 // ===============================
 async function loadInitialData() {
   document.getElementById('initialLoading').classList.remove('hidden');
-  
+  clearDiag();
   try {
     // Load Guru & Kamar secara parallel
     const [guruData, kamarData] = await Promise.all([
@@ -901,7 +920,7 @@ async function loadInitialData() {
     
   } catch (error) {
     document.getElementById('initialLoading').classList.add('hidden');
-    
+    showDiag(error.message, API_URL + '?action=getGuru&callback=cb_test');
     const retry = confirm('❌ Gagal memuat data:\n' + error.message + '\n\nCoba lagi?');
     if (retry) {
       loadInitialData();
@@ -1225,9 +1244,24 @@ async function submitData() {
 
 function testApi() {
   const url = API_URL + '?action=getGuru&callback=cb_test';
-  // buka di tab baru supaya user lihat response (callback JS harus muncul)
   window.open(url, '_blank');
-  alert('Membuka:\\n' + url + '\\n\\nJika yang tampil bukan "cb_test(...)" berarti deployment/API_URL perlu diperbaiki.');
+  showDiag('Membuka URL tes, periksa apakah hasil berupa cb_test(...).', url);
+}
+
+/* small helper to show diagnostic info to user (and console) */
+function showDiag(message, url) {
+  const diag = document.getElementById('diag');
+  const ua = navigator.userAgent || 'unknown UA';
+  let text = '⚠️ Gagal memuat data:\n' + message + '\n\nUser-Agent:\n' + ua;
+  if (url) text += '\n\nTest URL:\n' + url;
+  diag.textContent = text;
+  diag.classList.remove('hidden');
+  console.warn('Diag:', text);
+}
+function clearDiag() {
+  const diag = document.getElementById('diag');
+  diag.classList.add('hidden');
+  diag.textContent = '';
 }
 </script>
 </body>
