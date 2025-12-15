@@ -578,6 +578,11 @@ textarea{
   <div class="header">
     <h1>📋 Input Piket Ujian AL-IRTS</h1>
     <p>Sistem Pendataan Piket Pengawas Ujian</p>
+
+    <!-- debug: test API (bisa dihapus setelah selesai) -->
+    <div style="margin-top:12px">
+      <button onclick="testApi()" class="btn btn-secondary" style="padding:8px 12px;font-size:13px">Test API</button>
+    </div>
   </div>
 
 
@@ -698,7 +703,7 @@ textarea{
 // ===============================
 // CONFIG (FIXED API URL)
 // ===============================
-const API_URL = "https://script.google.com/macros/s/AKfycbxoWwm6qEUYZVLhMksyyzDl8Pgh_ZPYPlYDrSTcswQIG2AisNwTsR2RxPbzm5TFVmVDjQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzNIg35oMMpwa3jFlMMu3eowiQjyOcLLqFA_x2-D27bzl4irjE3N1xiq0hLCuvDLWdeAw/exec";
 
 // Data
 let semuaGuru = [];
@@ -1216,6 +1221,13 @@ async function submitData() {
     document.getElementById('submitLoading').classList.add('hidden');
     alert('❌ Gagal mengirim data: ' + error.message);
   }
+}
+
+function testApi() {
+  const url = API_URL + '?action=getGuru&callback=cb_test';
+  // buka di tab baru supaya user lihat response (callback JS harus muncul)
+  window.open(url, '_blank');
+  alert('Membuka:\\n' + url + '\\n\\nJika yang tampil bukan "cb_test(...)" berarti deployment/API_URL perlu diperbaiki.');
 }
 </script>
 </body>
