@@ -589,8 +589,8 @@ textarea{
 
 <div class="container">
   <div class="header">
-    <h1>📋 Input Piket Ujian AL-IRTS</h1>
-    <p>Sistem Pendataan Piket Pengawas Ujian</p>
+    <h1>📋 Input Piket Ujian Akhir Tahun</h1>
+    <p>Sistem Pendataan Piket Bagian Selama Masa Ujian</p>
 
     <!-- debug: test API (bisa dihapus setelah selesai) -->
     <!-- <div style="margin-top:12px">
@@ -658,7 +658,7 @@ textarea{
 
     <!-- PIKET UJIAN -->
     <div class="card">
-      <div class="card-title">Daftar Piket Pengawas</div>
+      <div class="card-title">Daftar Piket Ujian</div>
       
       <div class="piket-grid">
         <!-- SYAFAHI -->
@@ -669,7 +669,7 @@ textarea{
           </div>
           <div id="syafahi" class="guru-list"></div>
           <button class="btn btn-secondary btn-add" onclick="tambahGuru('syafahi')">
-            + Tambah Pengawas
+            + Tambah Piket
           </button>
         </div>
 
@@ -681,7 +681,7 @@ textarea{
           </div>
           <div id="tahriri" class="guru-list"></div>
           <button class="btn btn-secondary btn-add" onclick="tambahGuru('tahriri')">
-            + Tambah Pengawas
+            + Tambah Piket
           </button>
         </div>
       </div>
@@ -1201,7 +1201,7 @@ async function submitData() {
 
   // ===== VALIDASI MINIMAL =====
   if (list.length === 0) {
-    alert('⚠️ Minimal pilih satu pengawas');
+    alert('⚠️ Minimal pilih satu Piket Ujian');
     return;
   }
 
@@ -1216,7 +1216,7 @@ async function submitData() {
   const msg =
     `Apakah data sudah benar?\n\n` +
     `${tipeAktif === 'kepanitiaan' ? 'Kepanitiaan' : 'Kamar'}: ${kamarAktif}\n` +
-    `Jumlah Pengawas: ${list.length}\n\n` +
+    `Jumlah Piket: ${list.length}\n\n` +
     list.map(g => `• ${g.jenis}: ${g.rank} - ${g.nama}`).join('\n');
 
   if (!confirm(msg)) return;
