@@ -332,7 +332,7 @@
             const guruSelect = document.getElementById('guruSelect');
             guruSelect.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
 
-            Object.values(uniqueGuru).forEach(guru => {
+            Object.values(uniqueGuru).sort((a, b) => parseInt(a.rank) - parseInt(b.rank)).forEach(guru => {
                 const option = document.createElement('option');
                 option.value = guru.rank + '|' + guru.nama;
                 option.textContent = 'Rank ' + guru.rank + ' - ' + guru.nama;
