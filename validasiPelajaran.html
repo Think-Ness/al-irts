@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Validasi Data Pelajaran - Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .checkbox-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .checkbox-card:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .checkbox-card.checked {
+            border-color: #10b981;
+            background-color: #ecfdf5;
+        }
+        
+        .checkbox-card.invalid {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-md border-b-4 border-blue-600">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Validasi Data Pelajaran</h1>
+                    <p class="text-sm text-gray-600 font-medium mt-1">Verifikasi Data Mengajar Anda</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8 max-w-4xl">
+        <!-- Search Section -->
+        <div id="searchSection" class="card p-8 mb-8 fade-in">
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Cari Data Anda</h2>
+                <p class="text-gray-600">Masukkan Rank atau Nama Anda untuk memulai validasi</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Cari berdasarkan Rank atau Nama
+                    </label>
+                    <input type="text" id="searchInput" 
+                        placeholder="Contoh: 123 atau Fulan Ahmad"
+                        class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onkeyup="searchGuru()">
+                </div>
+
+                <!-- Dropdown Hasil Pencarian -->
+                <div id="searchResults" class="hidden">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Pilih Nama Anda
+                    </label>
+                    <select id="guruSelect" 
+                        class="w-full px-5 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        onchange="loadGuruData()">
+                        <option value="">-- Pilih Nama Anda --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="card p-12 text-center hidden">
+            <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent"></div>
+            <p class="mt-4 text-gray-600 font-medium">Memuat data pelajaran Anda...</p>
+        </div>
+
+        <!-- Validation Form -->
+        <div id="validationForm" class="hidden fade-in">
+            <!-- Guru Info Card -->
+            <div class="card p-8 mb-6">
+                <div class="flex items-start gap-4 mb-6 pb-6 border-b-2 border-gray-200">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                        <span id="guruRank">-</span>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-gray-900" id="guruNama">-</h3>
+                        <p class="text-gray-600 mt-1">Silakan validasi data pelajaran yang Anda ajar</p>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-lg">
+                    <div class="flex gap-3">
+                        <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div class="text-sm text-gray-700">
+                            <p class="font-semibold mb-2">Petunjuk Validasi:</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Centang ✓ jika data pelajaran sudah <strong>BENAR</strong></li>
+                                <li>Jangan centang jika data <strong>SALAH</strong>, lalu isi catatan koreksi</li>
+                                <li>Klik tombol <strong>SUBMIT VALIDASI</strong> setelah semua selesai dicek</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pelajaran List -->
+            <div class="card p-8 mb-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    Daftar Mata Pelajaran Anda
+                </h3>
+                <div id="pelajaranList" class="space-y-4">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="card p-6">
+                <button onclick="submitValidation()" id="submitBtn"
+                    class="submit-btn w-full text-white font-bold py-4 px-6 rounded-xl text-lg flex items-center justify-center gap-3 shadow-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    SUBMIT VALIDASI
+                </button>
+                <p class="text-center text-sm text-gray-500 mt-4">
+                    Pastikan semua data sudah dicek sebelum submit
+                </p>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden fade-in">
+            <div class="card p-12 text-center">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-3">Validasi Berhasil!</h2>
+                <p class="text-gray-600 mb-8">Data pelajaran Anda telah berhasil divalidasi dan disimpan.</p>
+                <button onclick="location.reload()" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition">
+                    Validasi Guru Lain
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzNpqqaA3psWlTo11I3F_nTfvLsXyyXNbUGIJFiJhgIQNKkg-7JjsnHZ8dUmk69XtlA/exec';
+        
+        let allData = [];
+        let currentGuruData = [];
+        let selectedGuru = null;
+
+        async function loadAllData() {
+            try {
+                const response = await fetch(WEB_APP_URL + '?action=getData');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allData = result.data;
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+        function searchGuru() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            if (searchTerm.length < 2) {
+                document.getElementById('searchResults').classList.add('hidden');
+                return;
+            }
+
+            const filtered = allData.filter(item => 
+                item.rank.toString().toLowerCase().includes(searchTerm) || 
+                item.nama.toLowerCase().includes(searchTerm)
+            );
+
+            const uniqueGuru = {};
+            filtered.forEach(item => {
+                const key = item.rank + '-' + item.nama;
+                if (!uniqueGuru[key]) {
+                    uniqueGuru[key] = {
+                        rank: item.rank,
+                        nama: item.nama
+                    };
+                }
+            });
+
+            const guruSelect = document.getElementById('guruSelect');
+            guruSelect.innerHTML = '<option value="">-- Pilih Nama Anda --</option>';
+
+            Object.values(uniqueGuru).forEach(guru => {
+                const option = document.createElement('option');
+                option.value = guru.rank + '|' + guru.nama;
+                option.textContent = 'Rank ' + guru.rank + ' - ' + guru.nama;
+                guruSelect.appendChild(option);
+            });
+
+            if (Object.keys(uniqueGuru).length > 0) {
+                document.getElementById('searchResults').classList.remove('hidden');
+            } else {
+                document.getElementById('searchResults').classList.add('hidden');
+            }
+        }
+
+        function loadGuruData() {
+            const selected = document.getElementById('guruSelect').value;
+            
+            if (!selected) return;
+
+            const parts = selected.split('|');
+            const rank = parts[0];
+            const nama = parts[1];
+
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('searchSection').classList.add('hidden');
+
+            setTimeout(() => {
+                // Fix: Compare rank as string to handle number vs string mismatch
+                currentGuruData = allData.filter(item => 
+                    item.rank.toString() === rank && item.nama === nama && item.status === 'pending'
+                );
+
+                console.log('Filtered data for rank:', rank, 'nama:', nama, 'found:', currentGuruData.length); // Debug log
+
+                if (currentGuruData.length === 0) {
+                    alert('✅ Data Anda sudah pernah divalidasi atau tidak ada data pending.');
+                    location.reload();
+                    return;
+                }
+
+                selectedGuru = { rank, nama };
+                
+                document.getElementById('guruRank').textContent = rank;
+                document.getElementById('guruNama').textContent = nama;
+
+                renderPelajaranList();
+
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('validationForm').classList.remove('hidden');
+            }, 800);
+        }
+
+        function renderPelajaranList() {
+            const container = document.getElementById('pelajaranList');
+            container.innerHTML = '';
+
+            currentGuruData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-card';
+                div.id = 'card-' + index;
+                
+                div.innerHTML = `
+                    <div class="flex items-start gap-4">
+                        <input type="checkbox" 
+                            id="check-${index}" 
+                            class="mt-1"
+                            onchange="togglePelajaran(${index})">
+                        <div class="flex-1">
+                            <label for="check-${index}" class="cursor-pointer">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-lg font-bold text-gray-900">${item.pelajaran}</h4>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">
+                                        Kelas ${item.kelas}
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-600">
+                                    Centang jika data sudah benar
+                                </p>
+                            </label>
+                            
+                            <div id="catatan-${index}" class="hidden mt-4">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    Catatan Koreksi <span class="text-red-500">*</span>
+                                </label>
+                                <textarea 
+                                    id="textarea-${index}"
+                                    rows="3" 
+                                    class="w-full px-4 py-3 border-2 border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                                    placeholder="Jelaskan kesalahan data ini... Contoh: Seharusnya kelas 6-C bukan 6-D"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        function togglePelajaran(index) {
+            const checkbox = document.getElementById('check-' + index);
+            const card = document.getElementById('card-' + index);
+            const catatanDiv = document.getElementById('catatan-' + index);
+            
+            if (checkbox.checked) {
+                card.classList.add('checked');
+                card.classList.remove('invalid');
+                catatanDiv.classList.add('hidden');
+            } else {
+                card.classList.remove('checked');
+                card.classList.add('invalid');
+                catatanDiv.classList.remove('hidden');
+            }
+        }
+
+        async function submitValidation() {
+            const validations = [];
+            let hasError = false;
+
+            for (let i = 0; i < currentGuruData.length; i++) {
+                const checkbox = document.getElementById('check-' + i);
+                const textarea = document.getElementById('textarea-' + i);
+                
+                if (checkbox.checked) {
+                    validations.push({
+                        row: currentGuruData[i].row,
+                        status: 'valid',
+                        catatan: 'Data sudah benar dan sesuai'
+                    });
+                } else {
+                    const catatan = textarea.value.trim();
+                    if (!catatan) {
+                        alert('⚠️ Catatan wajib diisi untuk data yang tidak valid!\n\nPelajaran: ' + currentGuruData[i].pelajaran + ' - Kelas ' + currentGuruData[i].kelas);
+                        textarea.focus();
+                        hasError = true;
+                        break;
+                    }
+                    validations.push({
+                        row: currentGuruData[i].row,
+                        status: 'invalid',
+                        catatan: catatan
+                    });
+                }
+            }
+
+            if (hasError) return;
+
+            if (!confirm('Apakah Anda yakin ingin submit validasi?\n\nTotal data: ' + validations.length + ' pelajaran')) {
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="inline-block animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div> Menyimpan...';
+
+            try {
+                const timestamp = new Date().toLocaleString('id-ID');
+                const validator = selectedGuru.nama;
+
+                for (const validation of validations) {
+                    const response = await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'action=updateValidasi&row=' + validation.row + 
+                              '&status=' + validation.status + 
+                              '&catatan=' + encodeURIComponent(validation.catatan) + 
+                              '&timestamp=' + encodeURIComponent(timestamp) +
+                              '&validator=' + encodeURIComponent(validator)
+                    });
+
+                    const result = await response.json();
+                    if (!result.success) {
+                        throw new Error(result.message);
+                    }
+                }
+
+                document.getElementById('validationForm').classList.add('hidden');
+                document.getElementById('successMessage').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error submitting validation:', error);
+                alert('❌ GAGAL MENYIMPAN\n\nTerjadi kesalahan: ' + error.message);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> SUBMIT VALIDASI';
+            }
+        }
+
+        window.onload = loadAllData;
+    </script>
+</body>
+</html>

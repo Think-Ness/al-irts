@@ -583,6 +583,106 @@ textarea{
   font-size:13px;
   white-space:pre-wrap;
 }
+
+/* ===== MOBILE POPUP FOR TAMBAH PIKET ===== */
+@media (max-width: 767px) {
+  .tambah-piket-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 400px;
+    max-height: 70vh;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    z-index: 10000;
+    animation: popupFadeIn .3s ease;
+    display: none;
+  }
+
+  .tambah-piket-popup.show {
+    display: block;
+  }
+
+  .tambah-piket-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 9999;
+    animation: fadeIn .2s ease;
+    display: none;
+  }
+
+  .tambah-piket-overlay.show {
+    display: block;
+  }
+
+  .tambah-piket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .tambah-piket-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .tambah-piket-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .tambah-piket-content {
+    max-height: calc(70vh - 60px);
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .tambah-piket-option {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background .15s;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .tambah-piket-option:last-child {
+    border-bottom: none;
+  }
+
+  .tambah-piket-option:hover {
+    background: #f8fafc;
+  }
+
+  .tambah-piket-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 14px;
+  }
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
 </style>
 </head>
 <body>
@@ -1097,29 +1197,139 @@ function tambahGuru(jenis) {
     }
   }
 
-  const container = document.getElementById(jenis);
-  const itemDiv = document.createElement('div');
-  itemDiv.className = 'guru-item';
+  const isMobile = window.innerWidth < 768;
 
-  const { wrapper, input } = createSearchableSelect(guruList, () => {
+  if (isMobile) {
+    // Mobile: Open popup with list
+    openTambahPiketPopup(jenis, guruList);
+  } else {
+    // Desktop: Use existing searchable select
+    const container = document.getElementById(jenis);
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'guru-item';
+
+    const { wrapper, input } = createSearchableSelect(guruList, () => {
+      updateBadge(jenis);
+    });
+
+    const btnRemove = document.createElement('button');
+    btnRemove.className = 'btn btn-remove';
+    btnRemove.textContent = '×';
+    btnRemove.onclick = () => {
+      itemDiv.remove();
+      updateBadge(jenis);
+    };
+
+    itemDiv.appendChild(wrapper);
+    itemDiv.appendChild(btnRemove);
+    container.appendChild(itemDiv);
+
+    setTimeout(() => input.focus(), 100);
     updateBadge(jenis);
+  }
+}
+
+function openTambahPiketPopup(jenis, guruList) {
+  // Remove existing popup if any
+  const existingPopup = document.querySelector('.tambah-piket-popup');
+  if (existingPopup) existingPopup.remove();
+  const existingOverlay = document.querySelector('.tambah-piket-overlay');
+  if (existingOverlay) existingOverlay.remove();
+
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'tambah-piket-overlay';
+  overlay.onclick = closeTambahPiketPopup;
+
+  // Create popup
+  const popup = document.createElement('div');
+  popup.className = 'tambah-piket-popup';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'tambah-piket-header';
+  header.innerHTML = `
+    <div class="tambah-piket-title">Pilih Guru untuk ${jenis === 'syafahi' ? 'Syafahi' : 'Tahriri'}</div>
+    <button class="tambah-piket-close" onclick="closeTambahPiketPopup()">✕</button>
+  `;
+
+  // Content
+  const content = document.createElement('div');
+  content.className = 'tambah-piket-content';
+
+  if (guruList.length === 0) {
+    content.innerHTML = '<div class="tambah-piket-empty">Tidak ada guru tersedia</div>';
+  } else {
+    content.innerHTML = guruList.map(g => 
+      `<div class="tambah-piket-option" data-rank="${g.rank}" data-nama="${g.nama}" data-kamar="${g.kamar}">
+        <strong>${g.rank} - ${g.nama}</strong>
+        <div style="font-size:12px;color:var(--text-light);margin-top:2px">${g.kamar}</div>
+      </div>`
+    ).join('');
+  }
+
+  // Add click handlers
+  content.querySelectorAll('.tambah-piket-option').forEach(opt => {
+    opt.onclick = () => {
+      const rank = opt.dataset.rank;
+      const nama = opt.dataset.nama;
+      const kamar = opt.dataset.kamar;
+
+      // Add to list
+      const container = document.getElementById(jenis);
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'guru-item';
+
+      // Create a read-only input to display selected guru
+      const displayDiv = document.createElement('div');
+      displayDiv.className = 'select-wrapper';
+      const displayInput = document.createElement('input');
+      displayInput.type = 'text';
+      displayInput.value = `${rank} - ${nama}`;
+      displayInput.readOnly = true;
+      displayInput.dataset.rank = rank;
+      displayInput.dataset.nama = nama;
+      displayInput.dataset.kamar = kamar;
+      displayDiv.appendChild(displayInput);
+
+      const btnRemove = document.createElement('button');
+      btnRemove.className = 'btn btn-remove';
+      btnRemove.textContent = '×';
+      btnRemove.onclick = () => {
+        itemDiv.remove();
+        updateBadge(jenis);
+      };
+
+      itemDiv.appendChild(displayDiv);
+      itemDiv.appendChild(btnRemove);
+      container.appendChild(itemDiv);
+
+      updateBadge(jenis);
+      closeTambahPiketPopup();
+    };
   });
 
-  const btnRemove = document.createElement('button');
-  btnRemove.className = 'btn btn-remove';
-  btnRemove.textContent = '×';
-  btnRemove.onclick = () => {
-    itemDiv.remove();
-    updateBadge(jenis);
-  };
+  popup.appendChild(header);
+  popup.appendChild(content);
 
-  itemDiv.appendChild(wrapper);
-  itemDiv.appendChild(btnRemove);
-  container.appendChild(itemDiv);
+  document.body.appendChild(overlay);
+  document.body.appendChild(popup);
 
-  setTimeout(() => input.focus(), 100);
+  setTimeout(() => {
+    overlay.classList.add('show');
+    popup.classList.add('show');
+  }, 10);
+}
 
-  updateBadge(jenis);
+function closeTambahPiketPopup() {
+  const overlay = document.querySelector('.tambah-piket-overlay');
+  const popup = document.querySelector('.tambah-piket-popup');
+  if (overlay) overlay.classList.remove('show');
+  if (popup) popup.classList.remove('show');
+  setTimeout(() => {
+    if (overlay) overlay.remove();
+    if (popup) popup.remove();
+  }, 300);
 }
 
 // ===============================
