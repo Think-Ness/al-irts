@@ -4,19 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validasi Data Pelajaran - Guru</title>
-      <meta name="description" content="Validasi Data Pelajaran - Guru" />
-  <meta name="title" content="Validasi Data Pelajaran" />
-    <meta name="description"
-        content="" />
-    <meta itemprop="image" content="https://drive.google.com/uc?export=view&id=1HAdDY1HhafWEJRxwta5k7n5FhR-ngLTp"  />
-    <link rel="icon" type="image/x-icon" href="assets/logo/validasi.jpeg" />
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://think-ness.github.io/al-irts/validasiPelajaran" />
-    <meta property="og:title" content="Validasi Data Pelajaran - Guru" />
-    <meta property="og:description"
-        content="Verifikasi Data Mengajar Anda." />
-    <meta property="og:image"  content="https://drive.google.com/uc?export=view&id=1HAdDY1HhafWEJRxwta5k7n5FhR-ngLTp" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -285,7 +272,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwu5mPWGH4BZYP9aZy98N5BNs21NvMlT6bUsKjWKFa6HnTo-BsY1FSqUngX8HCgifNy/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxD46yOpCxqqPpXrAszzPAsaO6cVoy8sdP8ErJIWzwh1sMKxgYQObIWdHWgzrNHVikX/exec';
         
         let allData = [];
         let currentGuruData = [];
@@ -372,9 +359,9 @@
             document.getElementById('searchSection').classList.add('hidden');
 
             setTimeout(() => {
-                // Fix: Compare rank as string to handle number vs string mismatch
+                // Filter: status === 'pending' && submitted_at === ''
                 currentGuruData = allData.filter(item => 
-                    item.rank.toString() === rank && item.nama === nama && item.status === 'pending'
+                    item.rank.toString() === rank && item.nama === nama && item.status === 'pending' && !item.submitted_at
                 );
 
                 console.log('Filtered data for rank:', rank, 'nama:', nama, 'found:', currentGuruData.length); // Debug log
@@ -540,6 +527,9 @@
             if (hasError) return;
 
             const additionalNotes = document.getElementById('additionalNotes').value.trim();
+            const additionalPelajaranText = additionalPelajaranList.length > 0 
+                ? additionalPelajaranList.map(p => `${p.pelajaran}|${p.kelas}`).join(',')
+                : '';
 
             if (!confirm('Apakah Anda yakin ingin submit validasi?\n\nTotal data: ' + validations.length + ' pelajaran')) {
                 return;
@@ -553,46 +543,24 @@
                 const timestamp = new Date().toLocaleString('id-ID');
                 const validator = selectedGuru.nama;
 
-                // Submit validations with additionalNotes
-                for (const validation of validations) {
-                    const response = await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'action=updateValidasi&row=' + validation.row + 
-                              '&status=' + validation.status + 
-                              '&catatan=' + encodeURIComponent(validation.catatan) + 
-                              '&timestamp=' + encodeURIComponent(timestamp) +
-                              '&validator=' + encodeURIComponent(validator) +
-                              '&additionalNotes=' + encodeURIComponent(additionalNotes)
-                    });
+                // Batch submit: 1 POST with all validations
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=submitAll&rank=' + encodeURIComponent(selectedGuru.rank) + 
+                          '&nama=' + encodeURIComponent(selectedGuru.nama) + 
+                          '&validations=' + encodeURIComponent(JSON.stringify(validations)) + 
+                          '&additionalNotes=' + encodeURIComponent(additionalNotes) + 
+                          '&additionalPelajaran=' + encodeURIComponent(additionalPelajaranText) + 
+                          '&timestamp=' + encodeURIComponent(timestamp) +
+                          '&validator=' + encodeURIComponent(validator)
+                });
 
-                    const result = await response.json();
-                    if (!result.success) {
-                        throw new Error(result.message);
-                    }
-                }
-
-                // Submit additional subjects separately if any
-                if (additionalPelajaranList.length > 0) {
-                    const additionalPelajaranText = additionalPelajaranList.map(p => `${p.pelajaran}|${p.kelas}`).join(',');
-                    const response = await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'action=addAdditionalPelajaran&rank=' + encodeURIComponent(selectedGuru.rank) + 
-                              '&nama=' + encodeURIComponent(selectedGuru.nama) + 
-                              '&pelajaran=' + encodeURIComponent(additionalPelajaranText) + 
-                              '&timestamp=' + encodeURIComponent(timestamp) +
-                              '&validator=' + encodeURIComponent(validator)
-                    });
-
-                    const result = await response.json();
-                    if (!result.success) {
-                        throw new Error(result.message);
-                    }
+                const result = await response.json();
+                if (!result.success) {
+                    throw new Error(result.message);
                 }
 
                 document.getElementById('validationForm').classList.add('hidden');
