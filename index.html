@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL-IRTS - Panitia Kegiatan</title>
+    <title>Panitia UAT Al-Irts - PMDG</title>
     <style>
         * {
             margin: 0;
@@ -11,97 +11,382 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #1a4d2e;
-            --secondary: #8b6914;
-            --gold: #d4af37;
-            --cream: #f5e6d3;
-            --dark: #1a1a1a;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--dark);
+            line-height: 1.4; /* Tighter for formality */
+            color: #1f2937;
+            background: #0f172a;
             overflow-x: hidden;
         }
 
-        /* Loading Animation */
-        .loader {
+        /* Header */
+        .header {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary);
+            right: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
         }
 
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-content {
-            text-align: center;
-            color: var(--gold);
-        }
-
-        .loader-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            border: 3px solid var(--gold);
-            border-radius: 50%;
+        .logo-section {
             display: flex;
             align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            font-size: 48px;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, #0f2818 100%);
+            font-weight: 900;
+            font-size: 1.5rem;
             color: white;
-            padding: 100px 20px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.4);
         }
 
-        header::before {
+        .brand-text {
+            color: white;
+        }
+
+        .brand-text h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .brand-text p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+
+        .nav-link::after {
             content: '';
             position: absolute;
-            top: 0;
+            bottom: -5px;
             left: 0;
-            right: 0;
-            height: 10px;
-            background: repeating-linear-gradient(
-                90deg,
-                var(--gold) 0px,
-                var(--gold) 20px,
-                var(--secondary) 20px,
-                var(--secondary) 40px
-            );
+            width: 0;
+            height: 2px;
+            background: #3b82f6;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-philosophy {
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-philosophy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 100px;
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
         }
 
         .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeInUp 1s ease-out;
+            color: white;
         }
 
-        @keyframes fadeInUp {
+        .hero-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase; /* More assertive */
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+            line-height: 1.6;
+            font-weight: 600; /* Bolder for emphasis */
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-hero {
+            padding: 16px 35px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            color: white;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.5);
+        }
+
+        .btn-hero-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-hero-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+
+        /* Hero Slider */
+        .hero-slider {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: white;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            width: 35px;
+            border-radius: 6px;
+            background: white;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: #1e293b;
+            padding: 80px 40px;
+            margin-top: 80px;
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .stat-card {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 100px 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 15px;
+            text-transform: uppercase; /* Assertive styling */
+        }
+
+        .section-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.2rem;
+            font-weight: 500; /* Slightly bolder */
+        }
+
+        .gallery-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-tab {
+            padding: 14px 35px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .gallery-tab.active {
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: floatUp 0.6s ease-out;
+        }
+
+        .gallery-item:nth-child(odd) {
+            animation: floatDown 0.6s ease-out;
+        }
+
+        @keyframes floatUp {
             from {
                 opacity: 0;
                 transform: translateY(30px);
@@ -112,203 +397,195 @@
             }
         }
 
-        .logo-header {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 30px;
-            background: var(--cream);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            font-weight: bold;
-            color: var(--primary);
-            border: 5px solid var(--gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            color: var(--gold);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        /* Navigation */
-        nav {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            padding: 15px;
-        }
-
-        nav a {
-            color: var(--primary);
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-
-        nav a:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        section {
-            padding: 60px 20px;
-        }
-
-        section:nth-child(even) {
-            background: var(--cream);
-        }
-
-        h2 {
-            font-size: 2.5em;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-            padding-bottom: 20px;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: var(--gold);
-        }
-
-        /* Nilai-Nilai */
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .value-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border-top: 5px solid var(--gold);
-        }
-
-        .value-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .value-number {
-            font-size: 2em;
-            color: var(--gold);
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .value-title {
-            font-size: 1.3em;
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .value-desc {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .gallery-item {
-            position: relative;
-            height: 250px;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
+        @keyframes floatDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .gallery-item:hover {
-            transform: scale(1.05);
+            transform: translateY(-10px) scale(1.03);
+            z-index: 10;
         }
 
-        .gallery-item img {
+        .gallery-item:nth-child(1) { height: 300px; }
+        .gallery-item:nth-child(2) { height: 400px; }
+        .gallery-item:nth-child(3) { height: 350px; }
+        .gallery-item:nth-child(4) { height: 320px; }
+        .gallery-item:nth-child(5) { height: 380px; }
+        .gallery-item:nth-child(6) { height: 300px; }
+        .gallery-item:nth-child(7) { height: 340px; }
+        .gallery-item:nth-child(8) { height: 360px; }
+
+        .gallery-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            transition: transform 0.4s;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
         }
 
         .gallery-overlay {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, rgba(26, 77, 46, 0.9) 0%, transparent 100%);
-            display: flex;
-            align-items: flex-end;
-            padding: 20px;
-            color: white;
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 25px;
+            transform: translateY(100%);
+            transition: transform 0.4s;
         }
 
         .gallery-item:hover .gallery-overlay {
-            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-overlay-title {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .gallery-overlay-date {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .view-more-container {
+            text-align: center;
+        }
+
+        .btn-view-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-view-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(30, 58, 138, 0.5);
+        }
+
+        /* Structure Section */
+        .structure-section {
+            background: #1e293b;
+            padding: 100px 40px;
+        }
+
+        .structure-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .member-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        .member-photo {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: white;
+        }
+
+        .member-info {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .member-position {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .btn-profile {
+            width: 100%;
+            padding: 14px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-profile:hover {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
         }
 
         /* Modal */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
+            z-index: 1000;
             left: 0;
+            top: 0;
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            justify-content: center;
+            backdrop-filter: blur(10px);
             align-items: center;
+            justify-content: center;
         }
 
         .modal.active {
@@ -316,313 +593,937 @@
         }
 
         .modal-content {
-            max-width: 90%;
-            max-height: 90%;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            max-width: 600px;
+            width: 90%;
+            padding: 50px;
             position: relative;
-        }
-
-        .modal-content img {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 10px;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
             color: white;
-            font-size: 40px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2.5rem;
             cursor: pointer;
-            background: none;
-            border: none;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.3s;
         }
 
-        /* Team */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+        .close-modal:hover {
+            color: white;
+            transform: rotate(90deg);
         }
 
-        .team-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .team-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .team-img {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .modal-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 60px;
-            color: var(--gold);
-        }
-
-        .team-info {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .team-name {
-            font-size: 1.2em;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .team-role {
-            color: var(--secondary);
-            font-weight: 500;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
+            font-size: 3rem;
+            font-weight: 900;
             color: white;
-            padding: 40px 20px;
-            text-align: center;
         }
 
-        footer::before {
-            content: '';
-            display: block;
-            height: 10px;
-            background: repeating-linear-gradient(
-                90deg,
-                var(--gold) 0px,
-                var(--gold) 20px,
-                var(--secondary) 20px,
-                var(--secondary) 40px
-            );
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-text {
+            text-align: left; /* Changed to left for formality */
+            line-height: 1.8;
+            color: rgba(255,255,255,0.8);
             margin-bottom: 30px;
         }
 
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 60px 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .contact-form button {
+            background: linear-gradient(135deg, #1e3a8a, #166534);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Gallery interactivity styles */
+        .gallery-item {
+            position: relative;
+        }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .gallery-interactions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-interactions {
+            opacity: 1;
+        }
+
+        .btn-like, .btn-share {
+            background: rgba(255,255,255,0.8);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .btn-like:hover {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-like.liked {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-share:hover {
+            background: #3742fa;
+            color: white;
+        }
+
+        .like-count {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        .comments-section {
+            position: absolute;
+            bottom: 80px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 10px;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .comments-section {
+            opacity: 1;
+        }
+
+        .comments-list {
+            max-height: 100px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .comment {
+            color: white;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .comment-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Lightbox enhancements */
+        .lightbox-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
         /* Responsive */
+        @media (max-width: 1200px) {
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
+            .header-content {
+                padding: 0 20px;
             }
 
-            h2 {
-                font-size: 1.8em;
+            .logo {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
             }
 
-            .logo-header {
-                width: 100px;
-                height: 100px;
-                font-size: 40px;
+            .brand-text h1 {
+                font-size: 1.1rem;
             }
 
-            nav ul {
-                flex-direction: column;
-                align-items: center;
+            .hero {
+                padding: 40px 20px;
             }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item {
+                height: 300px !important;
+            }
+
+            .structure-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">إرتس</div>
-            <h2>AL-IRTS</h2>
-            <p>Memuat...</p>
-        </div>
-    </div>
-
     <!-- Header -->
-    <header>
-        <div class="hero-content">
-            <div class="logo-header">إرتس</div>
-            <h1>AL-IRTS</h1>
-            <p class="subtitle">Tim Acara Ramadhan Luqmanul Hakim Committee</p>
-            <p>19 Rajab 1447 / 2026</p>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">UAT</div>
+                <div class="brand-text">
+                    <h1>Panitia UAT Al-Irts</h1>
+                    <p>Pondok Modern Darussalam Gontor</p>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a href="#hero" class="nav-link">Beranda</a>
+                <a href="#gallery" class="nav-link">Galeri</a>
+                <a href="#struktur" class="nav-link">Struktur</a>
+                <a href="#kontak" class="nav-link">Kontak</a>
+                <button class="btn-philosophy" onclick="showPhilosophy()">✦ Filosofi Logo</button>
+            </nav>
         </div>
     </header>
 
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><a href="#tentang">Tentang</a></li>
-            <li><a href="#nilai">Nilai-Nilai</a></li>
-            <li><a href="#galeri">Galeri</a></li>
-            <li><a href="#tim">Tim Panitia</a></li>
-            <li><a href="#kontak">Kontak</a></li>
-        </ul>
-    </nav>
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">// UJIAN AKHIR TAHUN 2025</div>
+                <h2>Menjaga Amanah, Menegakkan Kejujuran</h2>
+                <p class="hero-subtitle">Dengan komitmen tegas dan integritas absolut, kami mengelola serta mengawasi pelaksanaan Ujian Akhir Tahun untuk memastikan keadilan dan profesionalitas tertinggi.</p>
+                <div class="hero-buttons">
+                    <a href="#gallery" class="btn-hero btn-hero-primary">📸 Lihat Galeri</a>
+                    <a href="#struktur" class="btn-hero btn-hero-outline">👥 Tim Panitia</a>
+                </div>
+            </div>
 
-    <!-- Tentang -->
-    <section id="tentang">
-        <div class="container">
-            <h2>Tentang AL-IRTS</h2>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1em; line-height: 1.8; color: #555;">
-                AL-IRTS adalah Tim Acara Ramadhan Luqmanul Hakim Committee yang berkomitmen untuk menyelenggarakan kegiatan-kegiatan berkualitas selama bulan suci Ramadhan. Dengan semangat kebersamaan dan dedikasi, kami berupaya memberikan pengalaman spiritual dan sosial yang bermakna bagi seluruh peserta.
-            </p>
-        </div>
-    </section>
-
-    <!-- Nilai-Nilai -->
-    <section id="nilai">
-        <div class="container">
-            <h2>Nilai-Nilai Kami</h2>
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-number">1</div>
-                    <div class="value-title">Warisan Ilmu (إِرْثُ الْعِلْمِ)</div>
-                    <div class="value-desc">Panitia siap menjadi penerus warisan ilmu, menjadi pondok, memasakkan setiap santri merasakan ilmu dengan benar.</div>
+            <div class="hero-slider">
+                <div class="slider-container">
+                    <div class="slide active">
+                        <div class="slide-image">📚</div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🏫</div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">✍️</div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">🎓</div>
+                    </div>
                 </div>
-                <div class="value-card">
-                    <div class="value-number">2</div>
-                    <div class="value-title">Amanah Kesinambungan (إِرْثُ الْأَمَانَةِ)</div>
-                    <div class="value-desc">Ujian adalah bagian penting dari sistem KMI. Panitia menjadi penurus Insan kesinambungan (Amanuah, objektif, disiplin, jujur, dan ikhlas).</div>
-                </div>
-                <div class="value-card">
-                    <div class="value-number">3</div>
-                    <div class="value-title">Penjaga Standar (إِرْثُ الدِّقَّةِ)</div>
-                    <div class="value-desc">Seperti warisan yang harus dijaga nilainya, begitu pula mutu ujian dan pengelolaan harus dijaga dengan.</div>
-                </div>
-                <div class="value-card">
-                    <div class="value-number">4</div>
-                    <div class="value-title">Pengikat Identitas (إِرْثُ الْهُوِيَّةِ)</div>
-                    <div class="value-desc">Panitia dengan nama "IRTS" mengait simbol bahwa mereka bukan sekadar tim kerja, tetapi pewaris misi dan warisan perjuangan RMID sebagai manifestasi kadar-kadar umum.</div>
+                <div class="slider-dots">
+                    <span class="dot active" onclick="goToSlide(0)"></span>
+                    <span class="dot" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                    <span class="dot" onclick="goToSlide(3)"></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Galeri -->
-    <section id="galeri">
-        <div class="container">
-            <h2>Galeri Kegiatan</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 48px;">🕌</div>
-                    <div class="gallery-overlay">Kegiatan Ramadhan</div>
-                </div>
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #0f2818 0%, var(--primary) 100%); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 48px;">📖</div>
-                    <div class="gallery-overlay">Kajian Ilmu</div>
-                </div>
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--secondary) 0%, var(--gold) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">🤝</div>
-                    <div class="gallery-overlay">Kegiatan Sosial</div>
-                </div>
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary) 0%, #0a1f14 100%); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 48px;">🎯</div>
-                    <div class="gallery-overlay">Rapat Koordinasi</div>
-                </div>
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--gold) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">✨</div>
-                    <div class="gallery-overlay">Acara Penutupan</div>
-                </div>
-                <div class="gallery-item" onclick="openModal(this)">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #0f2818 0%, var(--gold) 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">📸</div>
-                    <div class="gallery-overlay">Dokumentasi</div>
-                </div>
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">800+</div>
+                <div class="stat-label">Peserta Ujian - Terpantau Ketat</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">45</div>
+                <div class="stat-label">Ruang Ujian - Siap Operasi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Hari Pelaksanaan - Tanpa Kompromi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">25</div>
+                <div class="stat-label">Tim Panitia - Profesional dan Dedikasi</div>
             </div>
         </div>
     </section>
 
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            <div id="modalImage"></div>
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="section-header">
+            <h2 class="section-title">Galeri Kegiatan</h2>
+            <p class="section-subtitle">Dokumentasi komprehensif perjalanan kepanitiaan, dari persiapan hingga evaluasi pasca-ujian.</p>
         </div>
-    </div>
 
-    <!-- Tim Panitia -->
-    <section id="tim">
-        <div class="container">
-            <h2>Tim Panitia</h2>
-            <div class="team-grid">
-                <div class="team-card">
-                    <div class="team-img">👤</div>
-                    <div class="team-info">
-                        <div class="team-name">Ketua Panitia</div>
-                        <div class="team-role">Koordinator Umum</div>
-                    </div>
+        <div class="gallery-tabs">
+            <button class="gallery-tab active" onclick="filterGallery('all')">✦ Semua</button>
+            <button class="gallery-tab" onclick="filterGallery('before')">📋 Persiapan</button>
+            <button class="gallery-tab" onclick="filterGallery('during')">🎯 Pelaksanaan</button>
+            <button class="gallery-tab" onclick="filterGallery('after')">📊 Evaluasi</button>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Before Items -->
+            <div class="gallery-item" data-category="before">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=1" alt="Rapat Koordinasi" loading="lazy">
                 </div>
-                <div class="team-card">
-                    <div class="team-img">👤</div>
-                    <div class="team-info">
-                        <div class="team-name">Wakil Ketua</div>
-                        <div class="team-role">Koordinator Pelaksana</div>
-                    </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item1')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Rapat Koordinasi')">📤</button>
                 </div>
-                <div class="team-card">
-                    <div class="team-img">👤</div>
-                    <div class="team-info">
-                        <div class="team-name">Sekretaris</div>
-                        <div class="team-role">Administrasi</div>
-                    </div>
+                <div class="like-count" id="like-count-item1">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item1"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item1')">
                 </div>
-                <div class="team-card">
-                    <div class="team-img">👤</div>
-                    <div class="team-info">
-                        <div class="team-name">Bendahara</div>
-                        <div class="team-role">Keuangan</div>
-                    </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Rapat Koordinasi</div>
+                    <div class="gallery-overlay-date">10 Desember 2025</div>
                 </div>
-                <div class="team-card">
-                    <div class="team-img">👤</div>
-                    <div class="team-info">
-                        <div class="team-name">Sie Acara</div>
-                        <div class="team-role">Koordinator Acara</div>
-                    </div>
+            </div>
+
+            <div class="gallery-item" data-category="before">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=2" alt="Distribusi Soal" loading="lazy">
                 </div>
-                <div class="team-card">
-                    <div class="team-img">👤</div>
-                    <div class="team-info">
-                        <div class="team-name">Sie Dokumentasi</div>
-                        <div class="team-role">Media & Dokumentasi</div>
-                    </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item2')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Distribusi Soal')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item2">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item2"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item2')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Distribusi Soal</div>
+                    <div class="gallery-overlay-date">12 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="before">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=3" alt="Persiapan Ruangan" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item3')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Persiapan Ruangan')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item3">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item3"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item3')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Persiapan Ruangan</div>
+                    <div class="gallery-overlay-date">13 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="before">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=4" alt="Training Pengawas" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item4')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Training Pengawas')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item4">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item4"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item4')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Training Pengawas</div>
+                    <div class="gallery-overlay-date">14 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="before">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=5" alt="Perencanaan Strategis" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item5')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Perencanaan Strategis')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item5">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item5"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item5')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Perencanaan Strategis</div>
+                    <div class="gallery-overlay-date">8 Desember 2025</div>
+                </div>
+            </div>
+
+            <!-- During Items -->
+            <div class="gallery-item" data-category="during">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=6" alt="Hari Pertama Ujian" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item6')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Hari Pertama Ujian')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item6">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item6"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item6')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Hari Pertama Ujian</div>
+                    <div class="gallery-overlay-date">16 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="during">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=7" alt="Pengawasan Ketat" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item7')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Pengawasan Ketat')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item7">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item7"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item7')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Pengawasan Ketat</div>
+                    <div class="gallery-overlay-date">17 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="during">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=8" alt="Dokumentasi" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item8')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Dokumentasi')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item8">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item8"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item8')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Dokumentasi</div>
+                    <div class="gallery-overlay-date">18 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="during">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=9" alt="Penutupan" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item9')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Penutupan')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item9">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item9"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item9')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Penutupan</div>
+                    <div class="gallery-overlay-date">22 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="during">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=10" alt="Puncak Pelaksanaan" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item10')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Puncak Pelaksanaan')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item10">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item10"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item10')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Puncak Pelaksanaan</div>
+                    <div class="gallery-overlay-date">20 Desember 2025</div>
+                </div>
+            </div>
+
+            <!-- After Items -->
+            <div class="gallery-item" data-category="after">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=11" alt="Evaluasi Hasil" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item11')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Evaluasi Hasil')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item11">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item11"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item11')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Evaluasi Hasil</div>
+                    <div class="gallery-overlay-date">25 Desember 2025</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="after">
+                <div class="gallery-image">
+                    <img src="https://picsum.photos/400/300?random=12" alt="Penutupan Resmi" loading="lazy">
+                </div>
+                <div class="gallery-interactions">
+                    <button class="btn-like" onclick="toggleLike(this, 'item12')">❤️</button>
+                    <button class="btn-share" onclick="shareItem('Penutupan Resmi')">📤</button>
+                </div>
+                <div class="like-count" id="like-count-item12">0</div>
+                <div class="comments-section">
+                    <div class="comments-list" id="comments-item12"></div>
+                    <input type="text" class="comment-input" placeholder="Tambah komentar..." onkeypress="addComment(event, 'item12')">
+                </div>
+                <div class="gallery-overlay">
+                    <div class="gallery-overlay-title">Penutupan Resmi</div>
+                    <div class="gallery-overlay-date">26 Desember 2025</div>
                 </div>
             </div>
         </div>
+
+        <div class="view-more-container">
+            <a href="https://drive.google.com" target="_blank" class="btn-view-more">
+                <span>📁</span>
+                <span>Lihat Semua di Google Drive</span>
+            </a>
+        </div>
     </section>
 
-    <!-- Kontak -->
-    <section id="kontak">
-        <div class="container">
-            <h2>Hubungi Kami</h2>
-            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                <p style="font-size: 1.1em; line-height: 1.8; color: #555; margin-bottom: 30px;">
-                    Untuk informasi lebih lanjut mengenai kegiatan AL-IRTS, silakan hubungi kami melalui kontak di bawah ini.
-                </p>
-                <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
-                    <p><strong>Email:</strong> alirts@example.com</p>
-                    <p><strong>Telepon:</strong> +62 xxx-xxxx-xxxx</p>
-                    <p><strong>Alamat:</strong> Pondok Pesantren Modern</p>
+    <!-- Structure Section -->
+    <section id="struktur" class="structure-section">
+        <div class="section-header">
+            <h2 class="section-title">Struktur Panitia</h2>
+            <p class="section-subtitle">Tim yang berintegritas dan berdedikasi tinggi</p>
+        </div>
+
+        <div class="structure-grid">
+            <div class="member-card" onclick="showProfile('Ketua Panitia')">
+                <div class="member-photo">👤</div>
+                <div class="member-info">
+                    <div class="member-name">Ahmad Fauzi</div>
+                    <span class="member-position">Ketua</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Wakil Ketua')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">👤</div>
+                <div class="member-info">
+                    <div class="member-name">Muhammad Rizki</div>
+                    <span class="member-position">Wakil Ketua</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Sekretaris')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">👤</div>
+                <div class="member-info">
+                    <div class="member-name">Abdullah Hasan</div>
+                    <span class="member-position">Sekretaris</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Bendahara')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">👤</div>
+                <div class="member-info">
+                    <div class="member-name">Umar Faruq</div>
+                    <span class="member-position">Bendahara</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Sie Soal')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">📝</div>
+                <div class="member-info">
+                    <div class="member-name">Yusuf Ibrahim</div>
+                    <span class="member-position" style="background: #166534;">Sie Soal</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Sie Pengawas')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">👮</div>
+                <div class="member-info">
+                    <div class="member-name">Ali Akbar</div>
+                    <span class="member-position" style="background: #d97706;">Sie Pengawas</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Sie Absensi')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">📋</div>
+                <div class="member-info">
+                    <div class="member-name">Hasan Basri</div>
+                    <span class="member-position" style="background: #7c3aed;">Sie Absensi</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="showProfile('Sie IT & Data')">
+                <div class="member-photo" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">💻</div>
+                <div class="member-info">
+                    <div class="member-name">Zainal Abidin</div>
+                    <span class="member-position" style="background: #0891b2;">Sie IT & Data</span>
+                    <button class="btn-profile">👤 Lihat Profil</button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 AL-IRTS. Tim Acara Ramadhan Luqmanul Hakim Committee</p>
-        <p style="margin-top: 10px; opacity: 0.8;">19 Rajab 1447</p>
+    <footer id="kontak" class="footer">
+        <div class="footer-content">
+            <h3 style="margin-bottom: 15px; font-size: 1.8rem;">Panitia Ujian Akhir Tahun Al-Irts</h3>
+            <p style="margin-bottom: 10px; opacity: 0.9;">Pondok Modern Darussalam Gontor</p>
+            <div class="contact-form">
+                <h4>Kontak Kami</h4>
+                <input type="text" placeholder="Nama" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Pesan" rows="4" required></textarea>
+                <button type="submit">Kirim Pesan</button>
+            </div>
+            <p style="opacity: 0.6; margin-top: 20px;">© 2025 - Menjaga Amanah, Menegakkan Kejujuran</p>
+        </div>
     </footer>
 
+    <!-- Philosophy Modal -->
+    <div id="philosophyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePhilosophy()">&times;</span>
+            <div class="modal-logo">UAT</div>
+            <h2 class="modal-title">Filosofi Logo</h2>
+            <div class="philosophy-icons">
+                <div class="philosophy-icon">
+                    <span>🔵</span>
+                    <p>Biru Navy: Kepercayaan & Profesionalitas</p>
+                </div>
+                <div class="philosophy-icon">
+                    <span>🟢</span>
+                    <p>Hijau: Pertumbuhan Ilmu & Kedamaian</p>
+                </div>
+                <div class="philosophy-icon">
+                    <span>📐</span>
+                    <p>Geometris: Ketegasan & Integritas</p>
+                </div>
+            </div>
+            <p class="modal-text">
+                Logo <strong>UAT</strong> merepresentasikan komitmen tegas panitia dalam mengemban amanah penyelenggaraan Ujian Akhir Tahun dengan integritas absolut. 
+                <br><br>
+                - <strong>Warna Biru Navy</strong>: Melambangkan kepercayaan tak tergoyahkan dan profesionalitas tinggi dalam setiap langkah.
+                <br>
+                - <strong>Hijau</strong>: Mencerminkan pertumbuhan ilmu pengetahuan dan kedamaian dalam proses pendidikan yang adil.
+                <br>
+                - <strong>Bentuk Geometris</strong>: Menggambarkan ketegasan tanpa kompromi dalam menjaga kejujuran dan integritas selama pelaksanaan ujian.
+                <br><br>
+                "Amanah adalah fondasi, kejujuran adalah komitmen kami."
+            </p>
+            <button class="btn-hero btn-hero-primary" onclick="closePhilosophy()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="modal-title">Profil Anggota</h2>
+            <p class="modal-text">Halaman profil detail akan segera dibuat untuk setiap anggota panitia dengan informasi lengkap, tugas, dan tanggung jawab.</p>
+            <button class="btn-hero btn-hero-primary" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Lightbox for Gallery -->
+    <div id="galleryLightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="close-modal" onclick="closeLightbox()">&times;</span>
+            <div class="lightbox-image">
+                <img id="lightboxImg" src="" alt="">
+            </div>
+            <h3 id="lightboxTitle" class="lightbox-title"></h3>
+        </div>
+    </div>
+
     <script>
-        // Loading animation
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loader').classList.add('hidden');
-            }, 2000);
+        // Gallery Filter
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const tabs = document.querySelectorAll('.gallery-tab');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            items.forEach((item, index) => {
+                item.style.animation = 'none';
+                setTimeout(() => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.style.display = 'block';
+                        item.style.animation = index % 2 === 0 ? 'floatUp 0.6s ease-out' : 'floatDown 0.6s ease-out';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }, 50);
+            });
+        }
+
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = n;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        // Auto slide
+        let sliderInterval = setInterval(nextSlide, 4000);
+        const sliderContainer = document.querySelector('.slider-container');
+        sliderContainer.addEventListener('mouseenter', () => clearInterval(sliderInterval));
+        sliderContainer.addEventListener('mouseleave', () => sliderInterval = setInterval(nextSlide, 4000));
+
+        // Modal
+        function showPhilosophy() {
+            document.getElementById('philosophyModal').classList.add('active');
+        }
+
+        function closePhilosophy() {
+            document.getElementById('philosophyModal').classList.remove('active');
+        }
+
+        function showProfile(name) {
+            const modal = document.getElementById('profileModal');
+            const title = document.getElementById('modalTitle');
+            title.textContent = 'Profil ' + name;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('profileModal').classList.remove('active');
+        }
+
+        // Gallery Interactivity
+        function toggleLike(button, itemId) {
+            const countEl = document.getElementById(`like-count-${itemId}`);
+            let count = parseInt(localStorage.getItem(`likes-${itemId}`) || 0);
+            if (button.classList.contains('liked')) {
+                count--;
+                button.classList.remove('liked');
+            } else {
+                count++;
+                button.classList.add('liked');
+            }
+            localStorage.setItem(`likes-${itemId}`, count);
+            countEl.textContent = count;
+        }
+
+        function shareItem(title) {
+            const url = window.location.href + '#gallery';
+            if (navigator.share) {
+                navigator.share({ title, url });
+            } else {
+                navigator.clipboard.writeText(url).then(() => alert('Link disalin!'));
+            }
+        }
+
+        function addComment(event, itemId) {
+            if (event.key === 'Enter' && event.target.value.trim()) {
+                const comments = JSON.parse(localStorage.getItem(`comments-${itemId}`) || '[]');
+                comments.push(event.target.value.trim());
+                localStorage.setItem(`comments-${itemId}`, JSON.stringify(comments));
+                event.target.value = '';
+                loadComments(itemId);
+            }
+        }
+
+        function loadComments(itemId) {
+            const comments = JSON.parse(localStorage.getItem(`comments-${itemId}`) || '[]');
+            const listEl = document.getElementById(`comments-${itemId}`);
+            listEl.innerHTML = comments.map(c => `<div class="comment">${c}</div>`).join('');
+        }
+
+        // Load likes and comments on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            for (let i = 1; i <= 12; i++) {
+                const itemId = `item${i}`;
+                const count = localStorage.getItem(`likes-${itemId}`) || 0;
+                document.getElementById(`like-count-${itemId}`).textContent = count;
+                if (count > 0) document.querySelector(`[onclick*="toggleLike"][onclick*="${itemId}"]`).classList.add('liked');
+                loadComments(itemId);
+            }
         });
+
+        // Enhanced Lightbox
+        function openLightbox(imageSrc, title) {
+            const lightbox = document.getElementById('galleryLightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            lightboxImg.src = imageSrc;
+            lightboxTitle.textContent = title;
+            lightbox.classList.add('active');
+        }
+
+        // Update click handler for lightbox
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (!e.target.closest('.gallery-interactions') && !e.target.closest('.comments-section')) {
+                    const imgSrc = item.querySelector('img').src;
+                    const title = item.querySelector('.gallery-overlay-title').textContent;
+                    openLightbox(imgSrc, title);
+                }
+            });
+        });
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const philosophyModal = document.getElementById('philosophyModal');
+            const profileModal = document.getElementById('profileModal');
+            if (event.target == philosophyModal) {
+                closePhilosophy();
+            }
+            if (event.target == profileModal) {
+                closeModal();
+            }
+        }
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -636,48 +1537,6 @@
                     });
                 }
             });
-        });
-
-        // Modal functions
-        function openModal(element) {
-            const modal = document.getElementById('modal');
-            const modalImage = document.getElementById('modalImage');
-            const content = element.querySelector('div').cloneNode(true);
-            content.style.width = '600px';
-            content.style.height = '400px';
-            content.style.borderRadius = '10px';
-            modalImage.innerHTML = '';
-            modalImage.appendChild(content);
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-        }
-
-        // Close modal on click outside
-        document.getElementById('modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s ease-out';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.value-card, .gallery-item, .team-card').forEach(el => {
-            observer.observe(el);
         });
     </script>
 </body>

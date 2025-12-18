@@ -483,6 +483,88 @@ textarea{
   width:100%;
 }
 
+/* Closed submission notification */
+.closed-notification {
+  text-align: center;
+  background: #fee2e2;
+  border: 2px solid #fecaca;
+  border-radius: 16px;
+  padding: 40px 20px;
+  margin: 20px 0;
+  animation: fadeInUp 0.6s ease;
+}
+
+.closed-notification h2 {
+  color: #991b1b;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.closed-notification p {
+  color: #7f1d1d;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.btn-wa {
+  background: #25d366;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-wa:hover {
+  background: #128c7e;
+  transform: translateY(-2px);
+}
+
+/* Config section for deadline */
+.config-deadline {
+  background: #fef3c7;
+  border: 2px solid #fbbf24;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.config-deadline strong {
+  color: #92400e;
+}
+
+/* Password field styles */
+.password-field {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.password-field input {
+  padding: 10px;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.password-field button {
+  padding: 10px 20px;
+  background: #991b1b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.password-field button:hover {
+  background: #7f1d1d;
+}
+
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn{
   from{opacity:0;}
@@ -601,7 +683,24 @@ textarea{
     <div id="diag" class="diag hidden" aria-live="polite"></div>
   </div>
 
+  <!-- Add config section for deadline (optional, for easy editing) -->
+  <div class="config-deadline hidden">
+    <strong>Konfigurasi Deadline:</strong> Edit DEADLINE di script untuk mengubah tanggal batas. WA Number: Edit WA_NUMBER.
+  </div>
 
+  <!-- Closed Submission Notification -->
+  <div id="closedNotification" class="closed-notification hidden">
+    <h2>⏰ Pengumpulan Piket Sudah Ditutup</h2>
+    <p>Batas waktu pengumpulan piket ujian telah berakhir. Jika ada pertanyaan atau keperluan khusus, silakan hubungi panitia.</p>
+    <a href="#" id="waLink" class="btn-wa" onclick="showPasswordField()" target="_blank">
+      📱 Hubungi Panitia via WhatsApp
+    </a>
+    <div id="passwordField" class="password-field hidden">
+      <p>Jika panitia memberikan kode akses, masukkan di bawah:</p>
+      <input type="password" id="passwordInput" placeholder="">
+      <button onclick="validatePassword()">Buka Form</button>
+    </div>
+  </div>
 
   <!-- LOADING INITIAL -->
   <div id="initialLoading" class="loading-overlay hidden">
@@ -722,6 +821,12 @@ textarea{
 // ===============================
 const API_URL = "https://script.google.com/macros/s/AKfycbzNIg35oMMpwa3jFlMMu3eowiQjyOcLLqFA_x2-D27bzl4irjE3N1xiq0hLCuvDLWdeAw/exec";
 
+// Add deadline and WA number
+const DEADLINE = new Date('2025-12-10T23:59:59'); // Set deadline date here (YYYY-MM-DDTHH:MM:SS)
+const WA_NUMBER = '6282332914996'; // Replace with actual WhatsApp number (without +)
+const WA_MESSAGE = encodeURIComponent('Assalamualaikum Wr. Wb Panitia, saya ingin menanyakan tentang pengumpulan piket ujian. Terima kasih.');
+const PASSWORD_KEY = 'GONTOR1926'; // The access key
+
 // Data
 let semuaGuru = [];
 let semuaKamar = [];
@@ -733,7 +838,26 @@ let dataLoaded = false;
 // INIT
 // ===============================
 window.addEventListener('DOMContentLoaded', () => {
-  loadInitialData();
+  const now = Date.now();
+  const deadlineTime = DEADLINE.getTime();
+  const hasSubmitted = localStorage.getItem('piketSubmitted') === 'true';
+
+  if (now > deadlineTime && !hasSubmitted) {
+    // Show closed notification
+    document.getElementById('closedNotification').classList.remove('hidden');
+    document.getElementById('waLink').href = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
+    document.getElementById('initialLoading').classList.add('hidden');
+    document.getElementById('formContent').classList.add('hidden');
+  } else if (hasSubmitted) {
+    // Already submitted, keep closed
+    document.getElementById('closedNotification').classList.remove('hidden');
+    document.getElementById('passwordField').classList.add('hidden');
+    document.getElementById('waLink').style.display = 'none';
+    document.getElementById('closedNotification').innerHTML += '<p style="color: #7f1d1d; margin-top: 10px;">Form sudah diisi dan dikirim. Tidak dapat dibuka lagi.</p>';
+  } else {
+    // Load form as usual
+    loadInitialData();
+  }
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.select-wrapper')) {
@@ -744,6 +868,22 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// Show password field on WA button click
+function showPasswordField() {
+  document.getElementById('passwordField').classList.remove('hidden');
+}
+
+// Validate password
+function validatePassword() {
+  const input = document.getElementById('passwordInput').value;
+  if (input === PASSWORD_KEY) {
+    // Open form
+    document.getElementById('closedNotification').classList.add('hidden');
+    loadInitialData();
+  } else {
+    alert('Kode akses salah. Silakan hubungi panitia untuk mendapatkan kode.');
+  }
+}
 
 // ===============================
 // API Call Helper
@@ -1233,8 +1373,11 @@ async function submitData() {
       list: list
     });
 
+    // Set flag to prevent reopening
+    localStorage.setItem('piketSubmitted', 'true');
+
     document.getElementById('submitLoading').classList.add('hidden');
-    alert('✅ Data berhasil terkirim!');
+    alert('✅ Data berhasil terkirim! Form telah ditutup permanen.');
     location.reload();
 
   } catch (error) {
