@@ -166,6 +166,18 @@
                     </div>
                 </div>
 
+                <!-- Email Input -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Email <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email" id="emailInput" 
+                        class="w-full px-5 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Contoh: nama@gmail.com"
+                        required>
+                    <p class="text-sm text-gray-500 mt-2">📧 Ringkasan validasi akan dikirim ke email ini</p>
+                </div>
+
                 <!-- Instructions -->
                 <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-lg">
                     <div class="flex gap-3">
@@ -274,7 +286,8 @@
                     </svg>
                 </div>
                 <h2 class="text-3xl font-bold text-gray-900 mb-3">Validasi Berhasil!</h2>
-                <p class="text-gray-600 mb-8">Data pelajaran Anda telah berhasil divalidasi dan disimpan.</p>
+                <p class="text-gray-600 mb-2">Data pelajaran Anda telah berhasil divalidasi dan disimpan.</p>
+                <p class="text-blue-600 font-semibold mb-8">📧 Email konfirmasi telah dikirim ke email Anda</p>
                 <button onclick="location.reload()" 
                     class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition">
                     Validasi Guru Lain
@@ -284,26 +297,35 @@
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxD46yOpCxqqPpXrAszzPAsaO6cVoy8sdP8ErJIWzwh1sMKxgYQObIWdHWgzrNHVikX/exec';
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyHINRTcZIAnWuBkLYC-DC1xkNKot30KRN6KQ9WK9JZkMKogb6oZcZvPvCWpspkNeXN/exec';
         
         let allData = [];
         let currentGuruData = [];
         let selectedGuru = null;
         let additionalPelajaranList = [];
 
-        async function loadAllData() {
-            try {
-                const response = await fetch(WEB_APP_URL + '?action=getData');
-                const result = await response.json();
-                
-                if (result.success) {
-                    allData = result.data;
-                    populatePelajaranDropdown(); // Populate dropdown on load
-                }
-            } catch (error) {
-                console.error('Error loading data:', error);
-            }
+async function loadAllData() {
+    try {
+        const response = await fetch(WEB_APP_URL + '?action=getData');
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.message);
         }
+
+        allData = result.data;
+        populatePelajaranDropdown();
+
+    } catch (error) {
+        console.error('Error loading data:', error);
+        alert('Gagal memuat data');
+    }
+}
+
+window.onload = loadAllData;
+
+                
+
 
         function populatePelajaranDropdown() {
             const uniquePelajaran = [...new Set(allData.map(item => item.pelajaran).filter(p => p))].sort();
@@ -371,12 +393,9 @@
             document.getElementById('searchSection').classList.add('hidden');
 
             setTimeout(() => {
-                // Filter: status === 'pending' && submitted_at === ''
                 currentGuruData = allData.filter(item => 
                     item.rank.toString() === rank && item.nama === nama && item.status === 'pending' && !item.submitted_at
                 );
-
-                console.log('Filtered data for rank:', rank, 'nama:', nama, 'found:', currentGuruData.length); // Debug log
 
                 if (currentGuruData.length === 0) {
                     alert('✅ Data Anda sudah pernah divalidasi atau tidak ada data pending.');
@@ -467,7 +486,6 @@
                 return;
             }
             
-            // Check if already in current list
             const exists = additionalPelajaranList.some(p => p.pelajaran === pelajaran && p.kelas === kelas);
             if (exists) {
                 alert('⚠️ Pelajaran ini sudah ditambahkan!');
@@ -507,6 +525,21 @@
         }
 
         async function submitValidation() {
+            // Validate email
+            const email = document.getElementById('emailInput').value.trim();
+            if (!email) {
+                alert('⚠️ Email wajib diisi!');
+                document.getElementById('emailInput').focus();
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('⚠️ Format email tidak valid!');
+                document.getElementById('emailInput').focus();
+                return;
+            }
+
             const validations = [];
             let hasError = false;
 
@@ -518,7 +551,9 @@
                     validations.push({
                         row: currentGuruData[i].row,
                         status: 'valid',
-                        catatan: 'Data sudah benar dan sesuai'
+                        catatan: 'Data sudah benar dan sesuai',
+                        pelajaran: currentGuruData[i].pelajaran,
+                        kelas: currentGuruData[i].kelas
                     });
                 } else {
                     const catatan = textarea.value.trim();
@@ -531,7 +566,9 @@
                     validations.push({
                         row: currentGuruData[i].row,
                         status: 'invalid',
-                        catatan: catatan
+                        catatan: catatan,
+                        pelajaran: currentGuruData[i].pelajaran,
+                        kelas: currentGuruData[i].kelas
                     });
                 }
             }
@@ -543,7 +580,7 @@
                 ? additionalPelajaranList.map(p => `${p.pelajaran}|${p.kelas}`).join(',')
                 : '';
 
-            if (!confirm('Apakah Anda yakin ingin submit validasi?\n\nTotal data: ' + validations.length + ' pelajaran')) {
+            if (!confirm('Apakah Anda yakin ingin submit validasi?\n\nTotal data: ' + validations.length + ' pelajaran\nEmail: ' + email)) {
                 return;
             }
 
@@ -555,7 +592,6 @@
                 const timestamp = new Date().toLocaleString('id-ID');
                 const validator = selectedGuru.nama;
 
-                // Batch submit: 1 POST with all validations
                 const response = await fetch(WEB_APP_URL, {
                     method: 'POST',
                     headers: {
@@ -563,6 +599,7 @@
                     },
                     body: 'action=submitAll&rank=' + encodeURIComponent(selectedGuru.rank) + 
                           '&nama=' + encodeURIComponent(selectedGuru.nama) + 
+                          '&email=' + encodeURIComponent(email) + 
                           '&validations=' + encodeURIComponent(JSON.stringify(validations)) + 
                           '&additionalNotes=' + encodeURIComponent(additionalNotes) + 
                           '&additionalPelajaran=' + encodeURIComponent(additionalPelajaranText) + 
