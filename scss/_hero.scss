@@ -58,7 +58,7 @@ hero 1
                     animation-delay: .8s;
 
                     & img {
-                        transform: rotate(-90deg);
+                        // transform: rotate(0deg);
                     }
                 }
 
@@ -165,8 +165,8 @@ hero 1
                 & .mil-word-frame {
                     & .mil-s-4 {
                         width: 20%;
-                        left: -15%;
-                        top: -55%;
+                        // left: -15%;
+                        // top: -55%;
                     }
                 }
             }
@@ -295,7 +295,7 @@ hero 1
 
             & .mil-s-3 {
                 bottom: 0;
-                right: -50vw;
+                // right: 50vw;
                 width: 50vw;
             }
         }
